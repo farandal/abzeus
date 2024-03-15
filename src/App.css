@@ -1,0 +1,84 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.body {
+    color:#000;
+    font-size: 14px;
+    background: white;
+}
+
+@font-face {
+    font-family: 'ABZeus';
+    src: local('ABZeus'), url('/fonts/ABZeus.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.abzeus {
+    font-family: 'ABZeus', sans-serif;
+}
+
+.highlightedText {
+    font-size: 10rem;
+    line-height: 0.6;
+    margin: 30px 0px;
+}
+
+.mainText {
+   line-height: 0.8;
+}
+
+.inputForm {
+  /*padding: 2em;*/
+}
+
+.translationResults {
+  color: #000;
+  font-size: 24px;
+}
+
+.screenshotContainer {
+    width: 600px;
+    padding: 20px;
+}
+
+@keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  @keyframes oscillate {
+    0% {
+   
+      opacity: 0.4;
+      filter: blur(3px);
+      transform: translateY(0px);
+    }
+    50% {
+       
+      opacity: 0.8;
+      filter: blur(8px);
+      transform: translateY(-20px);
+    }
+    100% {
+      
+      opacity: 0.4;
+      filter: blur(3px);
+      transform: translateY(0px);
+    }
+  }
+
+  .background {
+    animation: oscillate 8s ease-in-out infinite;
+  }
