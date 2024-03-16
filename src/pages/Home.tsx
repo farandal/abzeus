@@ -7,7 +7,7 @@ import { IconButton } from "@mui/material";
 import CameraIcon from '@mui/icons-material/Camera';
 //import ETO from "../components/ETO";
 import useWindowWidth from '../hooks/window';
-import WordGraph from "../components/WordGraph";
+import WordGraph, { IWordGraphImperativeCalls } from "../components/WordGraph";
 import { IABZeusGraphData } from "@/interfaces/IABZeusGraphData";
 import useElectronWindow from "@/hooks/electronWindow";
 const translator = new ABZeusAlfwetTranslator();
@@ -33,11 +33,13 @@ const Home = () => {
     const CHILD_TRINI_FORMAT = "+><"
 
     const suggested: ISuggested = {
-        "en": ["philosophy","zeus", "logos","god", "theology", "olimpus", "constructivism"],
-        "es": [ "filosofía","zeus", "logos", "dios", "teología", "olimpo", "constructivismo"]
+        "en": ["philosophy", "zeus", "logos", "god", "theology", "olimpus", "constructivism"],
+        "es": ["filosofía", "zeus", "logos", "dios", "teología", "olimpo", "constructivismo"]
     }
 
     const [abZeusWordGraph, setAbZeusWordGraph] = useState<IABZeusGraphData>({ nodes: [], links: [] });
+
+    const ABZeusGraphRef = useRef<IWordGraphImperativeCalls>(null);
 
     const [screenshot, setScreenshot] = useState<boolean>(false);
     const componentRef = useRef<HTMLDivElement>(null);
@@ -65,7 +67,10 @@ const Home = () => {
         ))}</>
     }
 
+    const [graphImage, setGraphImage] = useState(null);
     const handleCapture = () => {
+        const graphImage = ABZeusGraphRef.current?.screenshot();
+        setGraphImage(graphImage);
         setScreenshot(true);
     }
 
@@ -85,6 +90,10 @@ const Home = () => {
     useEffect(() => {
 
         if (screenshot === true) {
+
+
+
+
             html2canvas(componentRef.current as HTMLElement).then(canvas => {
                 const image = canvas.toDataURL("image/png");
                 const link = document.createElement("a");
@@ -147,8 +156,8 @@ const Home = () => {
 
         </div>
 
-        <div style={{ zIndex: 0, position: 'absolute', top: 0, left: 0, height: 580, width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat' }} >
-            {abZeusWordGraph.nodes[0] && <WordGraph width={size[0]} height={580} abZeusWordGraph={abZeusWordGraph} />}
+        <div style={{ zIndex: 0, position: 'absolute', top: 0, left: 0, height: 650, width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat' }} >
+            {abZeusWordGraph.nodes[0] && <WordGraph ref={ABZeusGraphRef} width={size[0]} height={650} abZeusWordGraph={abZeusWordGraph} />}
 
         </div>
 
@@ -194,10 +203,11 @@ const Home = () => {
                             <Button variant={"contained"} value="spanish" onClick={() => setLanguage("es")} disabled={language === "es"}>Spanish</Button>
                         </ButtonGroup>
                     </Box>
-                </> : <></>}
+                </> : <>
+                </>}
 
                 <div style={{ zIndex: 1000 }} className="translationResults">
-
+                    {graphImage && screenshot ? <img width={960} src={graphImage} /> : <></>}
                     {outputValue.map((value: IABZeusTranslatorOutput) => {
                         return <Box sx={{ textAlign: "center", justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
                             <div ref={textRef}  ><p className="abzeus">{value.simpleOutput}</p></div>
@@ -210,8 +220,12 @@ const Home = () => {
                     })}
                     {inputValue.length > 0 ? <Box><IconButton onClick={handleCapture} aria-label="Screenshot">
                         <CameraIcon />
-                    </IconButton></Box>:<></>} 
-                    <Box className="signature"> <p>Francisco Aranda L.</p> <p>ABZeus Alfwet Model</p> <p> ver. {version}</p> </Box>
+                    </IconButton></Box> : <></>}
+                    <Box className="signature">
+                        <p>{`Francisco Aranda L. <farandal@gmail.com>`}</p>
+                        <p>ABZeus Alfwet Model</p>
+                        <p>http://www.abzeus.cl</p>
+                        <p> ver. {version}</p> </Box>
                 </div>
             </div>
         </div> </>

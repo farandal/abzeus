@@ -1,14 +1,30 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Key, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { ForceGraph2D } from 'react-force-graph';
 
 import * as d3 from "d3";
 import { IABZeusGraphData } from '@/interfaces/IABZeusGraphData';
 
-const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGraph: IABZeusGraphData, width: number, height: number }) => {
+export interface IWordGraph {
+    abZeusWordGraph: IABZeusGraphData,
+    width: number,
+    height: number,
+}
+
+export interface IWordGraphImperativeCalls {
+    screenshot: () => any;
+    getGraph: any;
+
+}
+
+const WordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls, IWordGraph> = (props, ref) => {
+
+    const { abZeusWordGraph, width, height } = props;
 
     const rootId = abZeusWordGraph.nodes[0].id;
 
     const fgRef = useRef();
+
+    const inputRef = useRef<IWordGraphImperativeCalls>(null);
 
     const nodesById = useMemo(() => {
         const nodesById = Object.fromEntries(abZeusWordGraph.nodes.map(node => [node.id, node]));
@@ -16,12 +32,25 @@ const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGra
         // link parent/children
         abZeusWordGraph.nodes.forEach(node => {
             node.collapsed = node.id !== rootId;
+            if (node.id === rootId) {
+                node.label = "";
+                node.name = "";
+            }
             node.childLinks = [];
         });
         abZeusWordGraph.links.forEach(link => nodesById[link.source].childLinks.push(link));
 
         return nodesById;
     }, [abZeusWordGraph.links, abZeusWordGraph.nodes, rootId]);
+
+    /*useEffect(() => {
+
+        if( fgRef.current) {
+            //fgRef.current.zoomToFit()   
+            fgRef.current.centerAt({ x: width/2, y: 100});
+     }
+
+    },[abZeusWordGraph,fgRef])*/
 
     const getPrunedTree = useCallback(() => {
         const visibleNodes = [];
@@ -40,8 +69,8 @@ const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGra
 
     const [prunedTree, setPrunedTree] = useState(getPrunedTree());
 
-    
-    const NodeComponent = (node, ctx,globalScale) => {
+
+    const NodeComponent = (node, ctx, globalScale) => {
 
         if (node.type === "trini") {
             ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
@@ -87,8 +116,6 @@ const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGra
         ctx.fillStyle = node.isClusterNode ? "white" : "black"; //node.color;
         ctx.fillText(label, Number(node.x), Number(node.y));
 
-       
-
     }
 
     const handleNodeClick = useCallback(node => {
@@ -97,12 +124,71 @@ const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGra
         setPrunedTree(updatedTree)
     }, []);
 
+    useEffect(() => {
+        if (fgRef) {
+            fgRef.current.zoom(2);
+            // fgRef.current.centerAt({ x: width/2, y: 300});
+            fgRef.current.centerAt(0, 10);
+
+            //fgRef.current.zoomToFit();
+
+        }
+    }, [abZeusWordGraph, fgRef])
+
+    useImperativeHandle(ref, () => ({
+        screenshot: () => {
+            if (fgRef.current) {
+
+                //fgRef.current.centerAt(0,0);
+                fgRef.current.zoomToFit();
+
+                let cropRect = fgRef.current.getGraphBbox();
+
+                //fgRef.current.centerAt(-cropRect.x[0]/2,-cropRect.y[0]/2);
+
+                fgRef.current.zoomToFit();
+                cropRect = fgRef.current.getGraphBbox();
+
+
+                const canvas = document.getElementsByClassName("force-graph-container")[0].childNodes[0];
+
+                const croppedCanvas = document.createElement('canvas');
+                croppedCanvas.width = cropRect.x[1] - cropRect.x[0];
+                croppedCanvas.height = cropRect.y[1] - cropRect.y[0];
+                const croppedCtx = croppedCanvas.getContext('2d');
+
+                croppedCtx.drawImage(
+                    canvas,
+                    cropRect.x[0],
+                    cropRect.y[0],
+                    croppedCanvas.width,
+                    croppedCanvas.height,
+                    0,
+                    0,
+                    croppedCanvas.width,
+                    croppedCanvas.height
+                );
+
+
+                const canvasURL = canvas.toDataURL();
+
+                fgRef.current.zoom(1);
+
+                return canvasURL;
+            }
+            return null;
+        },
+        getGraph: () => {
+            return fgRef.current
+        }
+    }));
 
     const hierarchy = d3.stratify()
         .id(d => d.id)
         .parentId(d => d.parent)(abZeusWordGraph.nodes);
 
     return abZeusWordGraph ? <ForceGraph2D
+
         ref={fgRef}
         width={width}
         height={height}
@@ -112,8 +198,11 @@ const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGra
         nodeCanvasObject={NodeComponent}
         nodeLabel={"translation"}
         //linkCanvasObject={LinkComponent}
-        linkCanvasObjectMode={()=>"before"}
+        linkCanvasObjectMode={() => "before"}
         nodeColor={node => !node.childLinks.length ? '#333' : node.collapsed ? '#666' : '#999'}
+
+        enableZoomInteraction={false}
+        enablePanInteraction={false}
         //nodeComponent={NodeComponent}
         //linkComponent={LinkComponent}
         //dagMode={controls['DAG Orientation']}
@@ -140,4 +229,6 @@ const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGra
 
 }
 
-export default WordGraph;
+const Component = forwardRef<IWordGraphImperativeCalls, IWordGraph>(WordGraph);
+
+export default Component
