@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { ForceGraph2D } from 'react-force-graph';
+
 import * as d3 from "d3";
 
-const WordGraph = ({ abZeusWordGraph, ...props }: { abZeusWordGraph: any, props: any }) => {
+const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGraph: any,width:number,height:number }) => {
 
     const fgRef = useRef();
 
     return abZeusWordGraph ? <ForceGraph2D
+        width={width}
+        height={height}
 
         ref={fgRef}
         graphData={abZeusWordGraph}
@@ -73,19 +76,19 @@ const WordGraph = ({ abZeusWordGraph, ...props }: { abZeusWordGraph: any, props:
 
                 ctx.fillStyle = 'black';
                 ctx.beginPath();
-                ctx.arc(Number(node.x - 10), Number(node.y - 12), 7, 0, 2 * Math.PI);
+                ctx.arc((Number(node.x) - 10), Number(Number(node.y) - 12), 7, 0, 2 * Math.PI);
                 ctx.fill();
 
                 ctx.font = '18px ABZeus';
                 ctx.fillStyle = 'white';
                 if (node.type === "suj") {
-                    ctx.fillText('E', Number(node.x - 10), Number(node.y - 11));
+                    ctx.fillText('E', Number(Number(node.x) - 10), Number(Number(node.y) - 11));
                 }
                 if (node.type === "eto") {
-                    ctx.fillText('O', Number(node.x - 10), Number(node.y - 11));
+                    ctx.fillText('O', Number(Number(node.x) - 10), Number(Number(node.y) - 11));
                 }
                 if (node.type === "obj") {
-                    ctx.fillText('e', Number(node.x - 10), Number(node.y - 11));
+                    ctx.fillText('e', Number(Number(node.x) - 10), Number(Number(node.y) - 11));
                 }
 
             }

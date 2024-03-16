@@ -7,7 +7,7 @@ function App() {
     const theme = createTheme({
         palette: {
             primary: {
-                main: '#999999',
+                main: '#FFF',
             },
         },
     });

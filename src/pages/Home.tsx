@@ -8,28 +8,31 @@ import CameraIcon from '@mui/icons-material/Camera';
 import ETO from "../components/ETO";
 import useWindowWidth from '../hooks/window';
 import WordGraph from "../components/WordGraph";
+import { IABZeusGraphData } from "@/interfaces/IABZeusGraphData";
+import useElectronWindow from "@/hooks/electronWindow";
 
 const translator = new ABZeusAlfwetTranslator();
 
 export interface ISuggested {
     [x: string]: string[];
 }
-
-
+const userAgent = navigator.userAgent.toLowerCase();
+const isElectron = userAgent.indexOf(' electron/') > -1;
 const Home = () => {
 
-   
-    const size = useWindowWidth();
+    const sizeHook =  isElectron ? useElectronWindow : useWindowWidth
+    //const sizeHook = useWindowWidth;
+    const size = sizeHook()
 
     const PARENT_TRINI_FORMAT = "+<>"
     const CHILD_TRINI_FORMAT = "+><"
 
     const suggested: ISuggested = {
-        "en": ["zeus", "logos", "philosophy", "god", "theology","constructivism"],
-        "es": ["zeus", "logos", "filosofía", "dios", "teología","constructivismo"]
+        "en": ["zeus", "logos", "philosophy", "god", "theology", "olimpus", "constructivism"],
+        "es": ["zeus", "logos", "filosofía", "dios", "teología", "olimpo", "constructivismo"]
     }
 
-    const [abZeusWordGraph,setAbZeusWordGraph] = useState(null);
+    const [abZeusWordGraph, setAbZeusWordGraph] = useState<IABZeusGraphData>({nodes: [],links: []});
 
     const [screenshot, setScreenshot] = useState<boolean>(false);
     const componentRef = useRef<HTMLDivElement>(null);
@@ -109,36 +112,35 @@ const Home = () => {
             }
         }
 
-        if(inputValue.length > 1) {
+        if (inputValue.length > 1) {
             fetchData()
         }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inputValue, language])
 
-    const inputRef = useRef(null);
+    const inputRef = useRef<any>(null);
 
-  const handleChange = (event:any) => {
-    const inputValue = event.target.value.replace(/\s/g, '');
-    if (inputRef.current) {
-      inputRef.current.value = inputValue;
-      setInputValue(inputValue);
-    }
-  };
-
-
+    const handleChange = (event: any) => {
+        const inputValue = event.target.value.replace(/\s/g, '');
+        if (inputRef.current) {
+            inputRef.current.value = inputValue;
+            setInputValue(inputValue);
+        }
+    };
 
     return <>
         <div className={"background"} style={{ position: 'absolute', top: 280, left: 0, height: '100%', width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat', backgroundImage: `url(${bluredBackground})` }} >
-            
+
         </div>
-        
+
         <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat' }} >
-            <WordGraph height={size[1]} width={size[0]} abZeusWordGraph={abZeusWordGraph} />
-            
+            <WordGraph width={size[0]}  height={size[1]} abZeusWordGraph={abZeusWordGraph} />
+
         </div>
 
         <div className="root">
+            
             <div ref={componentRef} className={screenshot ? "screenshotContainer" : ""}>
                 <div className='highlightedText abzeus'>
                     *◯•
@@ -180,9 +182,9 @@ const Home = () => {
                         </ButtonGroup>
                     </Box>
                 </> : <></>}
-                
+
                 <div className="translationResults">
-                
+
                     {outputValue.map((value: IABZeusTranslatorOutput) => {
                         return <Box sx={{ textAlign: "center", justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
                             <h2>({value.splittedWord.join("'")}).*</h2>
