@@ -5,12 +5,11 @@ import { ButtonGroup, Button } from "@mui/material";
 import html2canvas from "html2canvas";
 import { IconButton } from "@mui/material";
 import CameraIcon from '@mui/icons-material/Camera';
-import ETO from "../components/ETO";
+//import ETO from "../components/ETO";
 import useWindowWidth from '../hooks/window';
 import WordGraph from "../components/WordGraph";
 import { IABZeusGraphData } from "@/interfaces/IABZeusGraphData";
 import useElectronWindow from "@/hooks/electronWindow";
-
 const translator = new ABZeusAlfwetTranslator();
 
 export interface ISuggested {
@@ -20,7 +19,7 @@ const userAgent = navigator.userAgent.toLowerCase();
 const isElectron = userAgent.indexOf(' electron/') > -1;
 const Home = () => {
 
-    const sizeHook =  isElectron ? useElectronWindow : useWindowWidth
+    const sizeHook = isElectron ? useElectronWindow : useWindowWidth
     //const sizeHook = useWindowWidth;
     const size = sizeHook()
 
@@ -32,7 +31,7 @@ const Home = () => {
         "es": ["zeus", "logos", "filosofía", "dios", "teología", "olimpo", "constructivismo"]
     }
 
-    const [abZeusWordGraph, setAbZeusWordGraph] = useState<IABZeusGraphData>({nodes: [],links: []});
+    const [abZeusWordGraph, setAbZeusWordGraph] = useState<IABZeusGraphData>({ nodes: [], links: [] });
 
     const [screenshot, setScreenshot] = useState<boolean>(false);
     const componentRef = useRef<HTMLDivElement>(null);
@@ -130,17 +129,17 @@ const Home = () => {
     };
 
     return <>
-        <div className={"background"} style={{ position: 'absolute', top: 280, left: 0, height: '100%', width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat', backgroundImage: `url(${bluredBackground})` }} >
+        <div className={"background"} style={{ zIndex: -1, position: 'absolute', top: 280, left: 0, height: '100%', width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat', backgroundImage: `url(${bluredBackground})` }} >
 
         </div>
 
-        <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat' }} >
-            <WordGraph width={size[0]}  height={size[1]} abZeusWordGraph={abZeusWordGraph} />
+        <div style={{ zIndex: 0, position: 'absolute', top: 0, left: 0, height: '100%', width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat' }} >
+            {abZeusWordGraph.nodes[0] && <WordGraph width={size[0]} height={size[1]} abZeusWordGraph={abZeusWordGraph} />}
 
         </div>
 
         <div className="root">
-            
+
             <div ref={componentRef} className={screenshot ? "screenshotContainer" : ""}>
                 <div className='highlightedText abzeus'>
                     *◯•
@@ -148,7 +147,7 @@ const Home = () => {
 
                 <h1 className='mainText abzeus'>ABZeus</h1>
 
-                <div className="inputForm">
+                <div className="inputForm" style={{ zIndex: 1 }} >
                     <Box sx={{ m: 1 }}>
                         {!screenshot ? <TextField
                             inputRef={inputRef}
@@ -183,21 +182,24 @@ const Home = () => {
                     </Box>
                 </> : <></>}
 
-                <div className="translationResults">
+                <div style={{ zIndex: 1000 }} className="translationResults">
 
                     {outputValue.map((value: IABZeusTranslatorOutput) => {
                         return <Box sx={{ textAlign: "center", justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
+                            <div ref={textRef}  ><p className="abzeus">{value.simpleOutput}</p></div>
                             <h2>({value.splittedWord.join("'")}).*</h2>
-                            <ETO input={value.trinitarianGroups} />
+                            {/*<ETO input={value.trinitarianGroups} />*/}
                             <p>{value.detailedOutput}</p>
                             <p>{value.simpleOutput}</p>
-                            <div ref={textRef}  ><p className="abzeus">{value.simpleOutput}</p></div>
+
                         </Box>
                     })}
                     {inputValue.length > 0 ? <IconButton onClick={handleCapture} aria-label="Screenshot">
                         <CameraIcon />
                     </IconButton> : <></>}
-                </div></div></div></>
+                </div>
+            </div>
+        </div> </>
 
 }
 export default Home;

@@ -51,7 +51,7 @@
     "@mui/icons-material": "^5.15.12",
     "@mui/material": "^5.15.12",
     "@react-native-community/blur": "^4.4.0",
-    "abzeus": "^0.0.3",
+    "abzeus": "^0.0.4",
     "axios": "^1.6.7",
     "d3": "^7.9.0",
     "d3-force": "^3.0.0",
