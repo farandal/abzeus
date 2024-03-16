@@ -38,7 +38,7 @@
 
 .translationResults {
   color: #000;
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .screenshotContainer {
@@ -81,4 +81,11 @@
 
   .background {
     animation: oscillate 8s ease-in-out infinite;
+  }
+
+  .signature p {
+    font-size: 10px;
+    line-height: 1;
+    margin: 0;
+    padding:0;
   }

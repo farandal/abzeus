@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useElectronWindow = () => {
-    const [windowSize, setWindowSize] = useState<[number,number]>([800,600]);
+    const [windowSize, setWindowSize] = useState<[number,number]>([1280,960]);
 
     useEffect(() => {
       const handleWindowSize = (size:any) => {
@@ -17,8 +17,7 @@ const useElectronWindow = () => {
       };
     }, []);
     
-console.log(windowSize);
-  return windowSize ? [windowSize[0], windowSize[1]] : [800,600];
+  return windowSize ? [windowSize[0], windowSize[1]] : [1280,960];
 };
 
 export default useElectronWindow;

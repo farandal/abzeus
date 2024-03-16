@@ -41,7 +41,7 @@ const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGra
     const [prunedTree, setPrunedTree] = useState(getPrunedTree());
 
     
-    const NodeComponent = (node, ctx) => {
+    const NodeComponent = (node, ctx,globalScale) => {
 
         if (node.type === "trini") {
             ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
@@ -72,6 +72,7 @@ const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGra
             if (node.type === "obj") {
                 ctx.fillText('e', Number(Number(node.x) - 10), Number(Number(node.y) - 11));
             }
+
         }
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 1;
@@ -85,6 +86,8 @@ const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGra
         ctx.textBaseline = "middle";
         ctx.fillStyle = node.isClusterNode ? "white" : "black"; //node.color;
         ctx.fillText(label, Number(node.x), Number(node.y));
+
+       
 
     }
 
@@ -107,6 +110,7 @@ const WordGraph = ({ abZeusWordGraph, width, height, ...props }: { abZeusWordGra
         graphData={abZeusWordGraph}
         nodeCanvasObjectMode={() => "after"}
         nodeCanvasObject={NodeComponent}
+        nodeLabel={"translation"}
         //linkCanvasObject={LinkComponent}
         linkCanvasObjectMode={()=>"before"}
         nodeColor={node => !node.childLinks.length ? '#333' : node.collapsed ? '#666' : '#999'}
