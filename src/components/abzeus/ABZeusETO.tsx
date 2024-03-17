@@ -1,6 +1,6 @@
 import { IABZeusTranslatorOutput } from "abzeus";
 
-const ETO = ({input}:{input:IABZeusTranslatorOutput["trinitarianGroups"]}) => {
+const ABZeusETO = ({input}:{input:IABZeusTranslatorOutput["trinitarianGroups"]}) => {
     
     const headers = ["suj", "eto", "obj"];
     const asciiHeaders = ["*", "o", "."];
@@ -35,4 +35,4 @@ const ETO = ({input}:{input:IABZeusTranslatorOutput["trinitarianGroups"]}) => {
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export default ETO;
+export default ABZeusETO;

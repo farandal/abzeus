@@ -8,6 +8,8 @@ export interface IWordGraph {
     abZeusWordGraph: IABZeusGraphData,
     width: number,
     height: number,
+    rootId?: Key,
+    style?: any
 }
 
 export interface IWordGraphImperativeCalls {
@@ -16,43 +18,55 @@ export interface IWordGraphImperativeCalls {
 
 }
 
-const WordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls, IWordGraph> = (props, ref) => {
+const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls, IWordGraph> = (props, ref) => {
 
-    const { abZeusWordGraph, width, height } = props;
+    const { abZeusWordGraph, width, height, rootId, style } = props;
+    const defaultContainerStyles = { width, height }
+    const containerProps = { style: { ...style, ...defaultContainerStyles } || { ...defaultContainerStyles } }
 
-    const rootId = abZeusWordGraph.nodes[0].id;
+    const [internalRootId, setInternalRootId] = useState<Key>(() => rootId || 0)
+
+    //const [processedABZeusWordGraph,setProcessedABZeusWordGraph] = useState<IABZeusGraphData>()
+    const _graph = useRef<IABZeusGraphData>();
 
     const fgRef = useRef();
 
     const inputRef = useRef<IWordGraphImperativeCalls>(null);
 
     const nodesById = useMemo(() => {
-        const nodesById = Object.fromEntries(abZeusWordGraph.nodes.map(node => [node.id, node]));
 
-        // link parent/children
-        abZeusWordGraph.nodes.forEach(node => {
-            node.collapsed = node.id !== rootId;
-            if (node.id === rootId) {
-                node.label = "";
-                node.name = "";
+        const clonedABZeusGraph: IABZeusGraphData = Object.create(abZeusWordGraph);
+        const nodesById = Object.fromEntries(clonedABZeusGraph.nodes.map(node => [node.id, node]));
+
+        const modifiedNodes = clonedABZeusGraph.nodes.map(node => {
+            const _node = { ...node, collapsed: node.id !== internalRootId };
+
+            if (_node.id === internalRootId) {
+                _node.label = "";
+                _node.name = "";
             }
-            node.childLinks = [];
+
+            _node.childLinks = [];
+
+            return _node
         });
-        abZeusWordGraph.links.forEach(link => nodesById[link.source].childLinks.push(link));
+
+
+        clonedABZeusGraph.links.forEach(link => {
+            try {
+                modifiedNodes[link.source].childLinks.push(link)
+            } catch (e) {
+                console.error(e);
+            }
+        });
+
+        _graph.current = { nodes: modifiedNodes, links: clonedABZeusGraph.links };
 
         return nodesById;
-    }, [abZeusWordGraph.links, abZeusWordGraph.nodes, rootId]);
 
-    /*useEffect(() => {
+    }, [abZeusWordGraph, internalRootId]);
 
-        if( fgRef.current) {
-            //fgRef.current.zoomToFit()   
-            fgRef.current.centerAt({ x: width/2, y: 100});
-     }
-
-    },[abZeusWordGraph,fgRef])*/
-
-    const getPrunedTree = useCallback(() => {
+    /*const getPrunedTree = useCallback(() => {
         const visibleNodes = [];
         const visibleLinks = [];
         (function traverseTree(node = nodesById[rootId]) {
@@ -67,7 +81,7 @@ const WordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls, IWord
         return { nodes: visibleNodes, links: visibleLinks };
     }, [nodesById]);
 
-    const [prunedTree, setPrunedTree] = useState(getPrunedTree());
+    const [prunedTree, setPrunedTree] = useState(getPrunedTree());*/
 
 
     const NodeComponent = (node, ctx, globalScale) => {
@@ -118,22 +132,25 @@ const WordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls, IWord
 
     }
 
-    const handleNodeClick = useCallback(node => {
+    /*const handleNodeClick = useCallback(node => {
         node.collapsed = !node.collapsed; // toggle collapse state
         const updatedTree = getPrunedTree();
         setPrunedTree(updatedTree)
-    }, []);
+    }, []);*/
 
     useEffect(() => {
-        if (fgRef) {
+        if (fgRef && fgRef.current) {
             fgRef.current.zoom(3);
             // fgRef.current.centerAt({ x: width/2, y: 300});
-            fgRef.current.centerAt(-20, 60);
+            //fgRef.current.centerAt(-5, -10);
 
             //fgRef.current.zoomToFit();
 
         }
-    }, [abZeusWordGraph, fgRef])
+        /*if(processedABZeusWordGraph) {
+            setInternalRootId(processedABZeusWordGraph.nodes[0].id);
+        }*/
+    }, [fgRef])
 
     useImperativeHandle(ref, () => ({
         screenshot: () => {
@@ -183,52 +200,59 @@ const WordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls, IWord
         }
     }));
 
-    const hierarchy = d3.stratify()
+    const hierarchy = _graph.current ? d3.stratify()
         .id(d => d.id)
-        .parentId(d => d.parent)(abZeusWordGraph.nodes);
+        .parentId(d => d.parent)(_graph.current.nodes) : null
 
-    return abZeusWordGraph ? <ForceGraph2D
+    return _graph.current && _graph.current.nodes && hierarchy ? <div className='ABZeusGraph'>
 
-        ref={fgRef}
-        width={width}
-        height={height}
-        d3Hierarchy={hierarchy}
-        graphData={abZeusWordGraph}
-        nodeCanvasObjectMode={() => "after"}
-        nodeCanvasObject={NodeComponent}
-        nodeLabel={"translation"}
-        //linkCanvasObject={LinkComponent}
-        linkCanvasObjectMode={() => "before"}
-        nodeColor={node => !node.childLinks.length ? '#333' : node.collapsed ? '#666' : '#999'}
+        <div className='background'  {...containerProps}></div>
+        <div className='graph'> <ForceGraph2D
 
-        enableZoomInteraction={false}
-        enablePanInteraction={false}
-        //nodeComponent={NodeComponent}
-        //linkComponent={LinkComponent}
-        //dagMode={controls['DAG Orientation']}
-        //dagMode={'radialout'}
-        //dagLevelDistance={10}
-        //d3Force="charges"
-        //d3ForceStrength={-1500}
-        //d3ForceCollide={(node) => node.group}
-        //onNodeClick={handleNodeClick}
-        //showNavInfo={false}
-        nodeAutoColorBy="module"
-        linkDirectionalArrowLength={3.5}
-        linkDirectionalArrowRelPos={1}
-        linkCurvature={0.4}
-        linkDirectionalParticles={1}
-        linkDirectionalParticleWidth={2}
-        d3VelocityDecay={0.2}
-        linkColor={() => 'rgba(0,0,0,1)'}
-        linkWidth={1}
-        nodeRelSize={16}
-        nodeVal={(node) => node.value}
-        {...props}
-    /> : <></>
+            ref={fgRef}
+            width={width}
+            height={height}
+            d3Hierarchy={hierarchy}
+            graphData={{
+                nodes: _graph.current.nodes.map((item: any) => Object.assign({}, item)),
+                links: _graph.current.links.map((item: any) => Object.assign({}, item))
+            }}
+            nodeCanvasObjectMode={() => "after"}
+            nodeCanvasObject={NodeComponent}
+            nodeLabel={"translation"}
+            //linkCanvasObject={LinkComponent}
+            linkCanvasObjectMode={() => "before"}
+            nodeColor={node => !node.childLinks.length ? '#333' : node.collapsed ? '#666' : '#999'}
+
+            enableZoomInteraction={false}
+            enablePanInteraction={false}
+            //nodeComponent={NodeComponent}
+            //linkComponent={LinkComponent}
+            //dagMode={controls['DAG Orientation']}
+            //dagMode={'radialout'}
+            //dagLevelDistance={10}
+            //d3Force="charges"
+            //d3ForceStrength={-1500}
+            //d3ForceCollide={(node) => node.group}
+            //onNodeClick={handleNodeClick}
+            //showNavInfo={false}
+            nodeAutoColorBy="module"
+            linkDirectionalArrowLength={3.5}
+            linkDirectionalArrowRelPos={1}
+            linkCurvature={0.4}
+            linkDirectionalParticles={1}
+            linkDirectionalParticleWidth={2}
+            d3VelocityDecay={0.2}
+            linkColor={() => 'rgba(0,0,0,1)'}
+            linkWidth={1}
+            nodeRelSize={16}
+            nodeVal={(node) => node.value}
+            {...props}
+        /> </div>
+    </div> : <></>
 
 }
 
-const Component = forwardRef<IWordGraphImperativeCalls, IWordGraph>(WordGraph);
+const ABZeusWordGraphRef = forwardRef<IWordGraphImperativeCalls, IWordGraph>(ABZeusWordGraph);
 
-export default Component
+export default ABZeusWordGraphRef

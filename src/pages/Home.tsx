@@ -1,244 +1,82 @@
-import { Box, Chip, TextField } from "@mui/material"
-import { ABZeusAlfwetTranslator, IABZeusTranslatorOutput } from "../abzeus";
-import { useState, useEffect, useRef } from "react"
-import { ButtonGroup, Button } from "@mui/material";
-import html2canvas from "html2canvas";
-//import jsPDF from 'jspdf';
-import { IconButton } from "@mui/material";
-import CameraIcon from '@mui/icons-material/Camera';
-//import ETO from "../components/ETO";
+import ABZeusTranslatorWidget, { IABZeusTranslatorWidget } from '@/components/abzeus/ABZeusTranslatorWidget';
 import useWindowWidth from '../hooks/window';
-import WordGraph, { IWordGraphImperativeCalls } from "../components/WordGraph";
-import { IABZeusGraphData } from "@/interfaces/IABZeusGraphData";
 import useElectronWindow from "@/hooks/electronWindow";
+import useAppConfig from "@/hooks/useAppConfig";
+import { ABZeusConfigState, setInput } from '@/state/ABZeusConfigSlice';
+import { RootState } from '@/store';
+import { Box } from '@mui/material';
 
-const translator = new ABZeusAlfwetTranslator();
-
+import ABZeusSuggestedTags from '@/components/abzeus/ABZeusSuggestedTags';
+import { IABZeusTranslatorOutput } from '@/abzeus';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 export interface ISuggested {
     [x: string]: string[];
-}
-const userAgent = navigator.userAgent.toLowerCase();
-const isElectron = userAgent.indexOf(' electron/') > -1;
-
-function getVersion() {
-    return process.env.APP_VERSION || "";
 }
 
 const Home = () => {
 
-    const version = getVersion();
-    const sizeHook = isElectron ? useElectronWindow : useWindowWidth
-    //const sizeHook = useWindowWidth;
+    const appConfig = useAppConfig();
+    const version = appConfig.version
+    const sizeHook = appConfig.isElectron ? useElectronWindow : useWindowWidth
     const size = sizeHook()
 
-    const PARENT_TRINI_FORMAT = "+<>"
-    const CHILD_TRINI_FORMAT = "+><"
+    const dispatch = useDispatch();
 
     const suggested: ISuggested = {
         "en": ["philosophy", "zeus", "logos", "god", "theology", "olimpus", "constructivism"],
         "es": ["filosofía", "zeus", "logos", "dios", "teología", "olimpo", "constructivismo"]
     }
+    const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
 
-    const [abZeusWordGraph, setAbZeusWordGraph] = useState<IABZeusGraphData>({ nodes: [], links: [] });
-
-    const ABZeusGraphRef = useRef<IWordGraphImperativeCalls>(null);
-
-    const [screenshot, setScreenshot] = useState<boolean>(false);
-    const componentRef = useRef<HTMLDivElement>(null);
-    const textRef = useRef<HTMLDivElement>(null);
-    const [inputValue, setInputValue] = useState<string>('')
-    const [outputValue, setOutputValue] = useState<IABZeusTranslatorOutput[]>([])
-    const [language, setLanguage] = useState("es");
-
-    const [bluredBackground, setBluredBackground] = useState<string>("");
-
-    const handleTagClick = (tag: string) => {
-        console.log(setInputValue(tag));
-    };
-
-    const LanguageTags = () => {
-
-        return <>{suggested[language].map((tag) => (
-            <Chip
-                key={tag}
-                label={tag}
-                onClick={() => handleTagClick(tag)}
-                variant="outlined"
-                color="primary"
-            />
-        ))}</>
-    }
-
-    const [graphImage, setGraphImage] = useState(null);
-    const handleCapture = () => {
-        const graphImage = ABZeusGraphRef.current?.screenshot();
-        setGraphImage(graphImage);
-        setScreenshot(true);
-    }
-
-
-    const blurText = () => {
-        if (inputValue.length > 0) {
-            html2canvas(textRef.current as HTMLElement, { backgroundColor: null, scale: 3 }).then(canvas => {
-
-                setBluredBackground(canvas.toDataURL("image/png"));
-
-            });
+    useEffect(() => {
+        const queryString = new URLSearchParams(window.location.search);
+        const word = queryString.get('w');
+        if (word) {
+          dispatch(setInput(word))
         } else {
-            setBluredBackground("")
+            dispatch(setInput("ABZeus"))
+        }
+      }, []);
+
+    if (!size) return <div>loading...</div>
+
+    const widgetConfig: IABZeusTranslatorWidget = {
+        width: size[0],
+        height: 650,
+        options: {
+            lang: ABZeusState.options?.lang || "es",
         }
     }
 
-    useEffect(() => {
+    return <Box className="mainContent home">
 
-        if (screenshot === true) {
+        <ABZeusTranslatorWidget {...widgetConfig} />
+        <ABZeusSuggestedTags  tags={suggested} />
+        {ABZeusState.output && ABZeusState.output.length > 0 && <Box className="secondaryContent">
+       
 
+        <div className="translationResults">
+            {ABZeusState.output && ABZeusState.output.map((value: IABZeusTranslatorOutput) => {
+                return <Box sx={{ textAlign: "center", justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
+                    <h2>({value.splittedWord.join("'")}).*</h2>
+                    <p>{value.detailedOutput}</p>
+                    <p>{value.simpleOutput}</p>
 
-
-
-            html2canvas(componentRef.current as HTMLElement).then(canvas => {
-                const image = canvas.toDataURL("image/png");
-                const link = document.createElement("a");
-                link.download = `${inputValue}.png`;
-                link.href = image;
-                link.click();
-
-                /*const image = canvas.toDataURL("image/jpeg");
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                pdf.addImage(image, 'JPEG', 15, 15, 180, 180);
-                pdf.save( `abzeus-${inputValue}.pdf`);*/
-
-
-
-                setScreenshot(false);
-
-            });
-        }
-
-    }, [screenshot, inputValue])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const output = translator.translate(inputValue, {
-                    lang: language,
-                    parentTriniFormat: PARENT_TRINI_FORMAT,
-                    childTriniFormat: CHILD_TRINI_FORMAT,
-                    nestedTranslation: true
-                })
-                console.log(output);
-                setOutputValue(output)
-                setAbZeusWordGraph({
-                    nodes: output[0].nodeTree.nodes,
-                    links: output[0].nodeTree.links
-                })
-                blurText()
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        if (inputValue.length > 1) {
-            fetchData()
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [inputValue, language])
-
-    const inputRef = useRef<any>(null);
-
-    const handleChange = (event: any) => {
-        const inputValue = event.target.value.replace(/\s/g, '');
-        if (inputRef.current) {
-            inputRef.current.value = inputValue;
-            setInputValue(inputValue);
-        }
-    };
-
-    useEffect(() => {
-        if (isElectron) {
-            window.electron.getWindowSize();
-        }
-    }, [])
-
-    return <>
-        <div className={"background"} style={{ zIndex: -1, position: 'absolute', top: 280, left: 0, height: '100%', width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat', backgroundImage: `url(${bluredBackground})` }} >
-
-        </div>
-
-        <div style={{ zIndex: 0, position: 'absolute', top: 0, left: 0, height: size[1], width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat' }} >
-            {abZeusWordGraph.nodes[0] && <WordGraph ref={ABZeusGraphRef} width={size[0]} height={size[1]} abZeusWordGraph={abZeusWordGraph} />}
-
-        </div>
-
-        <div className="root">
-
-            <div ref={componentRef} className={screenshot ? "screenshotContainer" : ""}>
-                <div className='highlightedText abzeus'>
-                    *◯•
-                </div>
-
-                <h1 className='mainText abzeus'>ABZeus</h1>
-
-                <div className="inputForm" style={{ zIndex: 1 }} >
-                    <Box sx={{ m: 1 }}>
-                        {!screenshot ? <TextField
-                            inputRef={inputRef}
-                            sx={{
-                                '& .MuiInputBase-root': {
-                                    borderColor: 'grey',
-                                    borderRadius: '20px',
-                                    fontSize: '3rem',
-
-                                },
-                                '& .MuiInputBase-input': {
-                                    textAlign: 'center',
-                                    fontFamily: 'ABZeus',
-                                    fontWeight: 'bold'
-                                },
-                            }}
-                            size={"medium"}
-                            value={inputValue}
-                            onChange={(event) => handleChange(event)}
-                        />
-                            : <h1 className="abzeus">{inputValue}</h1>}
-                    </Box>
-                </div>
-                {!screenshot ? <><Box sx={{ m: 1 }} className="hideOnScreenshot">
-                    <LanguageTags />
                 </Box>
-                    <Box sx={{ m: 1 }} className="hideOnScreenshot">
-                        <ButtonGroup>
-                            <Button variant={"contained"} value="english" onClick={() => setLanguage("en")} disabled={language === "en"}>English</Button>
-                            <Button variant={"contained"} value="spanish" onClick={() => setLanguage("es")} disabled={language === "es"}>Spanish</Button>
-                        </ButtonGroup>
-                    </Box>
-                </> : <>
-                </>}
+            })}
+        </div>
 
-                <div style={{ zIndex: 1000 }} className="translationResults">
-                    {graphImage && screenshot ? <img width={960} src={graphImage} /> : <></>}
-                    {outputValue.map((value: IABZeusTranslatorOutput) => {
-                        return <Box sx={{ textAlign: "center", justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
-                            <div ref={textRef}  ><p className="abzeus">{value.simpleOutput}</p></div>
-                            <h2>({value.splittedWord.join("'")}).*</h2>
-                            {/*<ETO input={value.trinitarianGroups} />*/}
-                            <p>{value.detailedOutput}</p>
-                            <p>{value.simpleOutput}</p>
+        </Box>}
 
-                        </Box>
-                    })}
-                    {inputValue.length > 0 ? <Box><IconButton onClick={handleCapture} aria-label="Screenshot">
-                        <CameraIcon />
-                    </IconButton></Box> : <></>}
-                    <Box className="signature">
-                        <p>{`Francisco Aranda L. <farandal@gmail.com>`}</p>
-                        <p>ABZeus Alfwet Model</p>
-                        <p>https://abzeus.cl/</p>
-                        <p> ver. {version}</p> </Box>
-                </div>
+        {/*<div className='mainHeader' style={{left:(size[0]/2-160)}}>
+            <div className='highlightedText abzeus'>
+                *◯•
             </div>
-        </div> </>
+
+            <h1 className='mainText abzeus'>ABZeus</h1>
+        </div>*/}
+    </Box>
 
 }
 export default Home;
