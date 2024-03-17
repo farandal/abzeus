@@ -157,13 +157,13 @@ const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls,
             if (fgRef.current) {
 
                 //fgRef.current.centerAt(0,0);
-                fgRef.current.zoomToFit();
+                //fgRef.current.zoomToFit();
 
                 let cropRect = fgRef.current.getGraphBbox();
 
                 //fgRef.current.centerAt(-cropRect.x[0]/2,-cropRect.y[0]/2);
 
-                fgRef.current.zoomToFit();
+                //fgRef.current.zoomToFit();
                 cropRect = fgRef.current.getGraphBbox();
 
 
@@ -189,7 +189,7 @@ const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls,
 
                 const canvasURL = canvas.toDataURL();
 
-                fgRef.current.zoom(1);
+                //fgRef.current.zoom(1);
 
                 return canvasURL;
             }

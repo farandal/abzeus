@@ -16,6 +16,7 @@ import IABZeusTranslatorConfig from "@/abzeus/interfaces/IABZeusTranslatorConfig
 import { ABZeusConfigState, setInput, setOptions, setOutput } from "@/state/ABZeusConfigSlice";
 import { RootState } from "@/store";
 import { useSelector, useDispatch } from 'react-redux'
+import useAppConfig from "@/hooks/useAppConfig";
 
 
 const translator = new ABZeusAlfwetTranslator();
@@ -39,6 +40,8 @@ export interface IABZeusTranslatorWidget extends PropsWithChildren {
 const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
 
     const { width, height, options } = props;
+
+    const appConfig = useAppConfig();
 
     const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
     const dispatch = useDispatch();
@@ -67,6 +70,7 @@ const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
         const graphImage = ABZeusGraphRef.current?.screenshot();
         setGraphImage(graphImage);
         setScreenshot(true);
+    
     }
 
     const blurText = () => {
@@ -83,7 +87,7 @@ const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
     useEffect(() => {
 
         if (screenshot === true) {
-
+            debugger;
             html2canvas(componentRef.current as HTMLElement).then(canvas => {
                 const image = canvas.toDataURL("image/png");
                 const link = document.createElement("a");
@@ -187,12 +191,6 @@ const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
 
         />}
 
-        {ABZeusState.input.length > 0 ? <Box className="screenshot">
-            <IconButton onClick={handleCapture} aria-label="Screenshot">
-                <CameraIcon />
-            </IconButton></Box> : <></>}
-
-
 
         <div className="inputForm">
             <Box sx={{ m: 1 }}>
@@ -219,16 +217,18 @@ const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
             </Box>
         </div>
 
+
+        {ABZeusState.input.length > 0 ? <Box className="screenshot">
+            <IconButton onClick={handleCapture} aria-label="Screenshot">
+                <CameraIcon />
+            </IconButton></Box> : <></>}
+
+
         {/*<div style={{ zIndex: 0, position: 'absolute', top: 66, left: 0, width: size[0], height: 400, backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat' }} >
             {abZeusWordGraph.nodes[0] && <WordGraph ref={ABZeusGraphRef} width={size[0]} height={400} abZeusWordGraph={abZeusWordGraph} rootId={0}/>}
         </div>*/}
 
-        {/*<div className="translationContent" style={{ width: size[0], height:450 }}>
-
-            <div ref={componentRef} className={screenshot ? "screenshotContainer" : ""}>
-                
-            </div>
-        </div>*/}
+       
 
         {/*<div style={{ zIndex: 1000 }} >
             {graphImage && screenshot ? <img width={size[0]} src={graphImage} /> : <></>}
@@ -238,6 +238,29 @@ const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
                    </Box>
             })}
         </div>*/}
+
+        {screenshot && <div ref={componentRef} className={screenshot ? "screenshotContainer" : ""}>
+                <div>
+                    <div className='highlightedText abzeus'>
+                        *◯•
+                    </div>
+
+                    <h1 className='mainText abzeus'>ABZeus</h1>
+                </div>
+                <h1 className="abzeus">{ABZeusState.output && ABZeusState.output[0].word}</h1>
+                {graphImage && <img width={800} src={graphImage} />}
+                <p className="abzeus">{ABZeusState.output && ABZeusState.output[0].simpleOutput}</p>
+                <p>{ABZeusState.output && ABZeusState.output[0].detailedOutput}</p>
+                <p>{ABZeusState.output && ABZeusState.output[0].simpleOutput}</p>
+                <Box sx={{pt:1}} className="signature">
+                        <p>{`Francisco Aranda L. <farandal@gmail.com>`}</p>
+                        <p>ABZeus Alfwet Model</p>
+                        <p>https://abzeus.cl/</p>
+                        <p> ver. {appConfig.version}</p> 
+                    </Box>
+                
+        </div>}
+                
 
     </div>
 

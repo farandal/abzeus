@@ -2,7 +2,7 @@ import ABZeusTranslatorWidget, { IABZeusTranslatorWidget } from '@/components/ab
 import useWindowWidth from '../hooks/window';
 import useElectronWindow from "@/hooks/electronWindow";
 import useAppConfig from "@/hooks/useAppConfig";
-import { ABZeusConfigState, setInput } from '@/state/ABZeusConfigSlice';
+import { ABZeusConfigState, setInput, setOptions } from '@/state/ABZeusConfigSlice';
 import { RootState } from '@/store';
 import { Box } from '@mui/material';
 
@@ -32,10 +32,14 @@ const Home = () => {
     useEffect(() => {
         const queryString = new URLSearchParams(window.location.search);
         const word = queryString.get('w');
+        const l = queryString.get('l');
         if (word) {
           dispatch(setInput(word))
         } else {
             dispatch(setInput("ABZeus"))
+        }
+        if (l) {
+            dispatch(setOptions({lang:l}))
         }
       }, []);
 
