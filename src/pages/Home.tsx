@@ -3,6 +3,7 @@ import { ABZeusAlfwetTranslator, IABZeusTranslatorOutput } from "../abzeus";
 import { useState, useEffect, useRef } from "react"
 import { ButtonGroup, Button } from "@mui/material";
 import html2canvas from "html2canvas";
+//import jsPDF from 'jspdf';
 import { IconButton } from "@mui/material";
 import CameraIcon from '@mui/icons-material/Camera';
 //import ETO from "../components/ETO";
@@ -10,6 +11,7 @@ import useWindowWidth from '../hooks/window';
 import WordGraph, { IWordGraphImperativeCalls } from "../components/WordGraph";
 import { IABZeusGraphData } from "@/interfaces/IABZeusGraphData";
 import useElectronWindow from "@/hooks/electronWindow";
+
 const translator = new ABZeusAlfwetTranslator();
 
 export interface ISuggested {
@@ -100,6 +102,14 @@ const Home = () => {
                 link.download = `${inputValue}.png`;
                 link.href = image;
                 link.click();
+
+                /*const image = canvas.toDataURL("image/jpeg");
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.addImage(image, 'JPEG', 15, 15, 180, 180);
+                pdf.save( `abzeus-${inputValue}.pdf`);*/
+
+
+
                 setScreenshot(false);
 
             });
@@ -156,8 +166,8 @@ const Home = () => {
 
         </div>
 
-        <div style={{ zIndex: 0, position: 'absolute', top: 0, left: 0, height: 650, width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat' }} >
-            {abZeusWordGraph.nodes[0] && <WordGraph ref={ABZeusGraphRef} width={size[0]} height={650} abZeusWordGraph={abZeusWordGraph} />}
+        <div style={{ zIndex: 0, position: 'absolute', top: 0, left: 0, height: size[1], width: '100%', backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat' }} >
+            {abZeusWordGraph.nodes[0] && <WordGraph ref={ABZeusGraphRef} width={size[0]} height={size[1]} abZeusWordGraph={abZeusWordGraph} />}
 
         </div>
 
@@ -224,7 +234,7 @@ const Home = () => {
                     <Box className="signature">
                         <p>{`Francisco Aranda L. <farandal@gmail.com>`}</p>
                         <p>ABZeus Alfwet Model</p>
-                        <p>http://www.abzeus.cl</p>
+                        <p>https://abzeus.cl/</p>
                         <p> ver. {version}</p> </Box>
                 </div>
             </div>

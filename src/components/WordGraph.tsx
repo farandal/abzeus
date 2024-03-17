@@ -126,9 +126,9 @@ const WordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls, IWord
 
     useEffect(() => {
         if (fgRef) {
-            fgRef.current.zoom(2);
+            fgRef.current.zoom(3);
             // fgRef.current.centerAt({ x: width/2, y: 300});
-            fgRef.current.centerAt(0, 10);
+            fgRef.current.centerAt(-20, 60);
 
             //fgRef.current.zoomToFit();
 
