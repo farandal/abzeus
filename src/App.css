@@ -1,7 +1,7 @@
 #root {
-  max-width: 1280px;
+  /*max-width: 1280px;*/
   margin: 0 auto;
-  padding: 2rem;
+  /*padding: 1rem;*/
   text-align: center;
 }
 
@@ -28,8 +28,32 @@
     margin: 30px 0px;
 }
 
+.unselectable {
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.mainContent {
+    margin-top: 65px;
+    margin-bottom: 65px;
+}
+
+.secondaryContent {
+    background: white;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 20px;
+}
 .mainText {
    line-height: 0.8;
+}
+
+.mainHeader {
+    position: absolute;
+    top: 30px;
+    z-index: 10000;
 }
 
 .inputForm {
@@ -38,11 +62,11 @@
 
 .translationResults {
   color: #000;
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .screenshotContainer {
-    width: 600px;
+    width: 960px;
     padding: 20px;
 }
 
@@ -79,6 +103,52 @@
     }
   }
 
-  .background {
+
+  .ABZeusTranslatorWidget {
+    position: relative;
+
+    background: linear-gradient(-33deg, #f8f8f8, #666), url("@/assets/eO*.png");
+    background-blend-mode:screen;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-size:contain;
+
+
+  }
+  .ABZeusTranslatorWidget .screenshot {
+    position: absolute;
+    top: 10px;
+    right:10px;
+  }
+
+  .ABZeusTranslatorWidget .inputForm {
+    position: absolute;
+    top: 5px;
+    width: 100%;
+  }
+
+  .ABZeusTranslatorWidget .simpleOutput {
+    font-size: 30px;
+    text-shadow: #000;
+  }
+
+  .ABZeusGraph .background {
+    position: absolute;
     animation: oscillate 8s ease-in-out infinite;
+    top: 0;
+    left: 0;
+  }
+
+  .ABZeusGraph {
+    position: relative;
+  }
+
+
+
+  .signature p {
+    font-size: 10px;
+    line-height: 1;
+    margin: 0;
+    padding:0;
   }
