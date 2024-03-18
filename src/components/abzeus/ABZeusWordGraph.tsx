@@ -87,12 +87,12 @@ const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls,
     const NodeComponent = (node, ctx, globalScale) => {
 
         if (node.type === "trini") {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            /*ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
             ctx.beginPath();
-            ctx.arc(Number(node.x), Number(node.y), 20, 0, 2 * Math.PI);
+            ctx.arc(Number(node.x), Number(node.y), 12, 0, 2 * Math.PI);
             ctx.fill();
             ctx.strokeStyle = 'black';
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 1;*/
         } else {
             ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
             ctx.beginPath();
@@ -222,7 +222,12 @@ const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls,
             nodeLabel={"translation"}
             //linkCanvasObject={LinkComponent}
             linkCanvasObjectMode={() => "before"}
-            nodeColor={node => !node.childLinks.length ? '#333' : node.collapsed ? '#666' : '#999'}
+            nodeColor={node => { 
+                if(node.type === "trini") {
+                    return "transparent"
+                }
+                return !node.childLinks.length ? '#c9c9c9' : node.collapsed ? '#c6c6c6' : '#d1d1d1' }
+            }
 
             enableZoomInteraction={false}
             enablePanInteraction={false}
@@ -245,7 +250,7 @@ const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls,
             d3VelocityDecay={0.2}
             linkColor={() => 'rgba(0,0,0,1)'}
             linkWidth={1}
-            nodeRelSize={16}
+            nodeRelSize={11}
             nodeVal={(node) => node.value}
             {...props}
         /> </div>

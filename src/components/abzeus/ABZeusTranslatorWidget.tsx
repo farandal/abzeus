@@ -61,21 +61,17 @@ const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
     const componentRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLDivElement>(null);
 
-
     const [bluredBackground, setBluredBackground] = useState<string>("");
-
 
     const [graphImage, setGraphImage] = useState(null);
     const handleCapture = () => {
         const graphImage = ABZeusGraphRef.current?.screenshot();
         setGraphImage(graphImage);
         setScreenshot(true);
-    
     }
 
     const blurText = () => {
         //if (ABZeusState.input.length > 0) {
-
         html2canvas(textRef.current as HTMLElement, { backgroundColor: null, scale: 3 }).then(canvas => {
             setBluredBackground(canvas.toDataURL("image/png"));
         });
@@ -85,21 +81,16 @@ const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
     }
 
     useEffect(() => {
-
         if (screenshot === true) {
-            debugger;
             html2canvas(componentRef.current as HTMLElement).then(canvas => {
                 const image = canvas.toDataURL("image/png");
                 const link = document.createElement("a");
                 link.download = `${ABZeusState.input}.png`;
                 link.href = image;
                 link.click();
-
                 setScreenshot(false);
-
             });
         }
-
     }, [screenshot, ABZeusState.input])
 
     useEffect(() => {
@@ -113,9 +104,8 @@ const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
                 })
 
                 blurText()
+                
                 dispatch(setOutput(output))
-
-
 
                 setAbZeusWordGraph({
                     nodes: output[0].nodeTree.nodes,
