@@ -7,8 +7,6 @@ import pkg from './package.json'
 
 import basicSsl from '@vitejs/plugin-basic-ssl';
 
-
-
 // https://vitejs.dev/config/
 /* @ts-expect-error command */
 export default defineConfig(({ command }) => {
