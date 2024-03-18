@@ -7,7 +7,7 @@ import { RootState } from '@/store';
 import { Box } from '@mui/material';
 
 import ABZeusSuggestedTags from '@/components/abzeus/ABZeusSuggestedTags';
-import { IABZeusTranslatorOutput } from '@/abzeus';
+import { IABZeusTranslatorOutput } from 'abzeus';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 export interface ISuggested {

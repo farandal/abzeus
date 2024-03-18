@@ -1,5 +1,5 @@
 import { Box, Chip, TextField } from "@mui/material"
-import { ABZeusAlfwetTranslator, IABZeusTranslatorOutput } from "../../abzeus";
+import { ABZeusAlfwetTranslator, IABZeusTranslatorOutput, IABZeusTranslatorConfig } from "abzeus";
 import { useState, useEffect, useRef } from "react"
 import { ButtonGroup, Button } from "@mui/material";
 import html2canvas from "html2canvas";
@@ -12,7 +12,7 @@ import WordGraph, { IWordGraphImperativeCalls } from "./ABZeusWordGraph";
 import { IABZeusGraphData } from "@/interfaces/IABZeusGraphData";
 import useElectronWindow from "@/hooks/electronWindow";
 import { PropsWithChildren } from "react";
-import IABZeusTranslatorConfig from "@/abzeus/interfaces/IABZeusTranslatorConfig";
+
 import { ABZeusConfigState, setInput, setOptions, setOutput } from "@/state/ABZeusConfigSlice";
 import { RootState } from "@/store";
 import { useSelector, useDispatch } from 'react-redux'
