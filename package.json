@@ -1,7 +1,7 @@
 {
   "name": "ABZeus",
   "private": true,
-  "version": "0.0.5",
+  "version": "0.0.7",
   "main": "dist-electron/main/index.js",
   "description": "PinoyWok Orders Dashboard",
   "author": "",
@@ -52,7 +52,7 @@
     "@mui/material": "^5.15.13",
     "@react-native-community/blur": "^4.4.0",
     "@reduxjs/toolkit": "^2.2.1",
-    "abzeus": "0.0.9",
+    "abzeus": "0.0.12",
     "axios": "^1.6.8",
     "d3": "^7.9.0",
     "d3-force": "^3.0.0",
@@ -67,6 +67,7 @@
     "react-force-graph": "^1.44.3",
     "react-gtm-module": "^2.0.11",
     "react-redux": "^9.1.0",
+    "react-router-dom": "6",
     "react-use-websocket": "^4.8.1"
   },
   "devDependencies": {

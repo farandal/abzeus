@@ -27,8 +27,8 @@ dependencies:
     specifier: ^2.2.1
     version: 2.2.1(react-redux@9.1.0)(react@18.2.0)
   abzeus:
-    specifier: 0.0.9
-    version: 0.0.9
+    specifier: 0.0.12
+    version: 0.0.12
   axios:
     specifier: ^1.6.8
     version: 1.6.8
@@ -71,6 +71,9 @@ dependencies:
   react-redux:
     specifier: ^9.1.0
     version: 9.1.0(@types/react@18.2.66)(react-native@0.73.6)(react@18.2.0)(redux@5.0.1)
+  react-router-dom:
+    specifier: '6'
+    version: 6.22.3(react-dom@18.2.0)(react@18.2.0)
   react-use-websocket:
     specifier: ^4.8.1
     version: 4.8.1(react-dom@18.2.0)(react@18.2.0)
@@ -2833,6 +2836,11 @@ packages:
       reselect: 5.1.0
     dev: false
 
+  /@remix-run/router@1.15.3:
+    resolution: {integrity: sha512-Oy8rmScVrVxWZVOpEF57ovlnhpZ8CCPlnIIumVcV9nFdiSIrus99+Lw78ekXyGvVDlIsFJbSfmSovJUhCWYV3w==}
+    engines: {node: '>=14.0.0'}
+    dev: false
+
   /@rollup/rollup-android-arm-eabi@4.13.0:
     resolution: {integrity: sha512-5ZYPOuaAqEH/W3gYsRkxQATBW3Ii1MfaT4EQstTnLKViLi2gLSQmlmtTpGucNP3sXEpOiI5tdGhjdE111ekyEg==}
     cpu: [arm]
@@ -3546,8 +3554,8 @@ packages:
       event-target-shim: 5.0.1
     dev: false
 
-  /abzeus@0.0.9:
-    resolution: {integrity: sha512-XKJkQAlb2g4fsBxNDl2bOyU2vF/UBBIParQt/9AJ1XfBQo45J19A3U9vRqaFskLvwcTNtTD3htRQ2WNptSuVKQ==}
+  /abzeus@0.0.12:
+    resolution: {integrity: sha512-HeG7wfkXJNTCNcX2s6EYhUSTaBqRo3nAIDW7DljKXfcGUo39yc2g/UsaUlnL88Bj4HbQEnaI6DAPOSZPZ9XeuQ==}
     dev: false
 
   /accepts@1.3.8:
@@ -7748,6 +7756,29 @@ packages:
   /react-refresh@0.14.0:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}
     engines: {node: '>=0.10.0'}
+
+  /react-router-dom@6.22.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-7ZILI7HjcE+p31oQvwbokjk6OA/bnFxrhJ19n82Ex9Ph8fNAq+Hm/7KchpMGlTgWhUxRHMMCut+vEtNpWpowKw==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.15.3
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-router: 6.22.3(react@18.2.0)
+    dev: false
+
+  /react-router@6.22.3(react@18.2.0):
+    resolution: {integrity: sha512-dr2eb3Mj5zK2YISHK++foM9w4eBnO23eKnZEDs7c880P6oKbrjz/Svg9+nxqtHQK+oMW4OtjZca0RqPglXxguQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.15.3
+      react: 18.2.0
+    dev: false
 
   /react-shallow-renderer@16.15.0(react@18.2.0):
     resolution: {integrity: sha512-oScf2FqQ9LFVQgA73vr86xl2NaOIX73rh+YFqcOp68CWj56tSfgtGKrEbyhCj0rSijyG9M1CYprTh39fBi5hzA==}

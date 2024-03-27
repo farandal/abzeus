@@ -7,7 +7,7 @@ import { RootState } from '@/store';
 import { Box } from '@mui/material';
 
 import ABZeusSuggestedTags from '@/components/abzeus/ABZeusSuggestedTags';
-import { IABZeusTranslatorOutput } from '@/abzeus';
+import { IABZeusTranslatorOutput } from 'abzeus';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 export interface ISuggested {
@@ -28,20 +28,6 @@ const Home = () => {
         "es": ["filosofía", "zeus", "logos", "dios", "teología", "olimpo", "constructivismo"]
     }
     const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
-
-    useEffect(() => {
-        const queryString = new URLSearchParams(window.location.search);
-        const word = queryString.get('w');
-        const l = queryString.get('l');
-        if (word) {
-          dispatch(setInput(word))
-        } else {
-            dispatch(setInput("ABZeus"))
-        }
-        if (l) {
-            dispatch(setOptions({lang:l}))
-        }
-      }, []);
 
     if (!size) return <div>loading...</div>
 
