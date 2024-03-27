@@ -1,13 +1,5 @@
-import ABZeusTranslatorWidget, { IABZeusTranslatorWidget } from '@/components/abzeus/ABZeusTranslatorWidget';
-import useWindowWidth from '../hooks/window';
-import useElectronWindow from "@/hooks/electronWindow";
-import useAppConfig from "@/hooks/useAppConfig";
 import { ABZeusConfigState, setInput, setOptions } from '@/state/ABZeusConfigSlice';
 import { RootState } from '@/store';
-import { Box } from '@mui/material';
-
-import ABZeusSuggestedTags from '@/components/abzeus/ABZeusSuggestedTags';
-import { IABZeusTranslatorOutput } from 'abzeus';
 import { PropsWithChildren, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 export interface ISuggested {

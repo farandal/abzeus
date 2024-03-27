@@ -4,6 +4,7 @@ import { ABZeusConfigState } from "@/state/ABZeusConfigSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Box } from "@mui/material";
+import { IABZeusDictEntry } from "@/abzeus/classes/Dict";
 
 
 const ABZeusAlfwet = () => {
@@ -25,7 +26,7 @@ const ABZeusAlfwet = () => {
 
     },[ABZeusState])
 
-    const [dictionary,setDictionary] = useState<Map<string, string>>()
+    const [dictionary,setDictionary] = useState<Map<string, IABZeusDictEntry>>()
 
     useEffect(() => {
        if(dict && currentLang) {
@@ -36,6 +37,7 @@ const ABZeusAlfwet = () => {
     if(!dictionary) return <>Loading</>
     return (
       <Box sx={{pt:10,pb:10}}>
+
       <table>
       <thead>
         <tr>
@@ -71,11 +73,11 @@ const ABZeusAlfwet = () => {
                         backgroundColor: 'white',
                     }}
                     >
-                    {key}
+                    {value.char}
                 </Box>    
             </td>
-            <td className="abzeus">{value}</td>
-            <td>{value}</td>
+            <td className="abzeus">{value.translation}</td>
+            <td>{value.translation}</td>
           </tr>
         ))}
       </tbody>

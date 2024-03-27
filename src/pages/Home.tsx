@@ -7,7 +7,7 @@ import { RootState } from '@/store';
 import { Box } from '@mui/material';
 
 import ABZeusSuggestedTags from '@/components/abzeus/ABZeusSuggestedTags';
-import { IABZeusTranslatorOutput } from 'abzeus';
+import { IABZeusTranslatorOutput } from '../abzeus';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 export interface ISuggested {
@@ -25,7 +25,8 @@ const Home = () => {
 
     const suggested: ISuggested = {
         "en": ["philosophy", "zeus", "logos", "god", "theology", "olimpus", "constructivism"],
-        "es": ["filosofía", "zeus", "logos", "dios", "teología", "olimpo", "constructivismo"]
+        "es": ["filosofía", "zeus", "logos", "dios", "teología", "olimpo", "constructivismo"],
+        "gk": ["filosofía"],
     }
     const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
 
@@ -45,14 +46,14 @@ const Home = () => {
         <ABZeusSuggestedTags  tags={suggested} />
         {ABZeusState.output && ABZeusState.output.length > 0 && <Box className="secondaryContent">
        
-
         <div className="translationResults">
             {ABZeusState.output && ABZeusState.output.map((value: IABZeusTranslatorOutput) => {
                 return <Box sx={{ textAlign: "center", justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
-                    <h2>({value.splittedWord.join("'")}).*</h2>
+                    <h2 className={ABZeusState.options?.lang}>{value.charTranslatedWord}</h2>
+                    <h2 className={ABZeusState.options?.lang}>({value.splittedWord.join("'")}).*</h2>
                     <p>{value.detailedOutput}</p>
                     <p>{value.simpleOutput}</p>
-
+            
                 </Box>
             })}
         </div>
