@@ -29,20 +29,6 @@ const Home = () => {
     }
     const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
 
-    useEffect(() => {
-        const queryString = new URLSearchParams(window.location.search);
-        const word = queryString.get('w');
-        const l = queryString.get('l');
-        if (word) {
-          dispatch(setInput(word))
-        } else {
-            dispatch(setInput("ABZeus"))
-        }
-        if (l) {
-            dispatch(setOptions({lang:l}))
-        }
-      }, []);
-
     if (!size) return <div>loading...</div>
 
     const widgetConfig: IABZeusTranslatorWidget = {

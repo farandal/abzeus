@@ -6,11 +6,11 @@ import electron from 'vite-plugin-electron/simple'
 import pkg from './package.json'
 
 import basicSsl from '@vitejs/plugin-basic-ssl';
-
+const ELECTRON_ENABLED = false;
 // https://vitejs.dev/config/
 /* @ts-expect-error command */
 export default defineConfig(({ command }) => {
-  rmSync('dist-electron', { recursive: true, force: true })
+  ELECTRON_ENABLED && rmSync('dist-electron', { recursive: true, force: true })
 
   const isServe = command === 'serve'
   const isBuild = command === 'build'
@@ -44,7 +44,7 @@ export default defineConfig(({ command }) => {
         },
       }),
       //basicSsl(),
-      electron({
+      ELECTRON_ENABLED && electron({
         main: {
           // Shortcut of `build.lib.entry`
           entry: 'electron/main/index.ts',
