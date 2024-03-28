@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import createABZeusDict from "../../abzeus/dict/createABZeusDict";
+import {ABZeusDict, IABZeusDictEntry} from "abzeus";
 import { ABZeusConfigState } from "@/state/ABZeusConfigSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Box } from "@mui/material";
-import { IABZeusDictEntry } from "@/abzeus/classes/Dict";
 
 
 const ABZeusAlfwet = () => {
 
     const dispatch = useDispatch();
     
-    const dict = createABZeusDict();
+    const dict = ABZeusDict();
 
     const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
     

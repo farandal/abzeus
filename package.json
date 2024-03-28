@@ -1,7 +1,7 @@
 {
   "name": "ABZeus",
   "private": true,
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "dist-electron/main/index.js",
   "description": "ABZeus Translator",
   "author": "",
@@ -52,7 +52,7 @@
     "@mui/material": "^5.15.13",
     "@react-native-community/blur": "^4.4.0",
     "@reduxjs/toolkit": "^2.2.1",
-    "abzeus": "0.0.12",
+    "abzeus": "0.0.16",
     "axios": "^1.6.8",
     "d3": "^7.9.0",
     "d3-force": "^3.0.0",

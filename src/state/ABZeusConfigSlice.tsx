@@ -1,4 +1,4 @@
-import { IABZeusTranslatorOutput,IABZeusTranslatorConfig } from '../abzeus'
+import { IABZeusTranslatorOutput,IABZeusTranslatorConfig } from 'abzeus'
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
