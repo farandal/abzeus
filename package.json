@@ -1,7 +1,7 @@
 {
   "name": "ABZeus",
   "private": true,
-  "version": "0.0.9",
+  "version": "0.0.10",
   "main": "dist-electron/main/index.js",
   "description": "ABZeus Translator",
   "author": "",
@@ -17,7 +17,8 @@
     "dist": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "build": "vite build && electron-builder"
+    "build": "vite build",
+    "electron-build": "vite build && electron-builder"
   },
   "build": {
     "icon": "public/logo/abzeus.png",
