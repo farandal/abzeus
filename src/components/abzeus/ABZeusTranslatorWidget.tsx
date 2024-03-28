@@ -18,9 +18,7 @@ import { RootState } from "@/store";
 import { useSelector, useDispatch } from 'react-redux'
 import useAppConfig from "@/hooks/useAppConfig";
 
-
 const translator = new ABZeusAlfwetTranslator();
-
 export interface ISuggested {
     [x: string]: string[];
 }
@@ -30,7 +28,6 @@ const isElectron = userAgent.indexOf(' electron/') > -1;
 function getVersion() {
     return process.env.APP_VERSION || "";
 }
-
 export interface IABZeusTranslatorWidget extends PropsWithChildren {
     width?: number,
     height?: number,
@@ -104,7 +101,7 @@ const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
                 })
 
                 blurText()
-                
+
                 dispatch(setOutput(output))
 
                 setAbZeusWordGraph({
@@ -213,44 +210,27 @@ const ABZeusTranslatorWidget = (props: IABZeusTranslatorWidget) => {
                 <CameraIcon />
             </IconButton></Box> : <></>}
 
-
-        {/*<div style={{ zIndex: 0, position: 'absolute', top: 66, left: 0, width: size[0], height: 400, backgroundPositionX: "center", backgroundOrigin: 'revert', backgroundRepeat: 'no-repeat' }} >
-            {abZeusWordGraph.nodes[0] && <WordGraph ref={ABZeusGraphRef} width={size[0]} height={400} abZeusWordGraph={abZeusWordGraph} rootId={0}/>}
-        </div>*/}
-
-       
-
-        {/*<div style={{ zIndex: 1000 }} >
-            {graphImage && screenshot ? <img width={size[0]} src={graphImage} /> : <></>}
-            {ABZeusState.output && ABZeusState.output.map((value: IABZeusTranslatorOutput) => {
-                return <Box sx={{ textAlign: "center", justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
-                    <div ref={textRef}  ><p className="abzeus">{value.simpleOutput}</p></div>
-                   </Box>
-            })}
-        </div>*/}
-
         {screenshot && <div ref={componentRef} className={screenshot ? "screenshotContainer" : ""}>
-                <div>
-                    <div className='highlightedText abzeus'>
-                        *◯•
-                    </div>
-
-                    <h1 className='mainText abzeus'>ABZeus</h1>
+            <div>
+                <div className='highlightedText abzeus'>
+                    *◯•
                 </div>
-                <h1 className="abzeus">{ABZeusState.output && ABZeusState.output[0].word}</h1>
-                {graphImage && <img width={800} src={graphImage} />}
-                <p className="abzeus">{ABZeusState.output && ABZeusState.output[0].simpleOutput}</p>
-                <p>{ABZeusState.output && ABZeusState.output[0].detailedOutput}</p>
-                <p>{ABZeusState.output && ABZeusState.output[0].simpleOutput}</p>
-                <Box sx={{pt:1}} className="signature">
-                        <p>{`Francisco Aranda L. <farandal@gmail.com>`}</p>
-                        <p>ABZeus Alfwet Model</p>
-                        <p>https://abzeus.cl/</p>
-                        <p> ver. {appConfig.version}</p> 
-                    </Box>
-                
+
+                <h1 className='mainText abzeus'>ABZeus</h1>
+            </div>
+            <h1 className="abzeus">{ABZeusState.output && ABZeusState.output[0].word}</h1>
+            {graphImage && <img width={800} src={graphImage} />}
+            <p className="abzeus">{ABZeusState.output && ABZeusState.output[0].simpleOutput}</p>
+            <p>{ABZeusState.output && ABZeusState.output[0].detailedOutput}</p>
+            <p>{ABZeusState.output && ABZeusState.output[0].simpleOutput}</p>
+            <Box sx={{ pt: 1 }} className="signature">
+                <p>{`Francisco Aranda L. <farandal@gmail.com>`}</p>
+                <p>ABZeus Alfwet Model</p>
+                <p>https://abzeus.cl/</p>
+                <p> ver. {appConfig.version}</p>
+            </Box>
+
         </div>}
-                
 
     </div>
 
