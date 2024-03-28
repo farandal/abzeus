@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import createABZeusDict from "../../abzeus/dict/createABZeusDict";
+import {ABZeusDict, IABZeusDictEntry} from "abzeus";
 import { ABZeusConfigState } from "@/state/ABZeusConfigSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -10,7 +10,7 @@ const ABZeusAlfwet = () => {
 
     const dispatch = useDispatch();
     
-    const dict = createABZeusDict();
+    const dict = ABZeusDict();
 
     const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
     
@@ -25,7 +25,7 @@ const ABZeusAlfwet = () => {
 
     },[ABZeusState])
 
-    const [dictionary,setDictionary] = useState<Map<string, string>>()
+    const [dictionary,setDictionary] = useState<Map<string, IABZeusDictEntry>>()
 
     useEffect(() => {
        if(dict && currentLang) {
@@ -36,6 +36,7 @@ const ABZeusAlfwet = () => {
     if(!dictionary) return <>Loading</>
     return (
       <Box sx={{pt:10,pb:10}}>
+
       <table>
       <thead>
         <tr>
@@ -71,11 +72,11 @@ const ABZeusAlfwet = () => {
                         backgroundColor: 'white',
                     }}
                     >
-                    {key}
+                    {value.char}
                 </Box>    
             </td>
-            <td className="abzeus">{value}</td>
-            <td>{value}</td>
+            <td className="abzeus">{value.translation}</td>
+            <td>{value.translation}</td>
           </tr>
         ))}
       </tbody>

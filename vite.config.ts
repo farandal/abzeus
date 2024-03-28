@@ -10,6 +10,8 @@ const ELECTRON_ENABLED = false;
 // https://vitejs.dev/config/
 /* @ts-expect-error command */
 export default defineConfig(({ command }) => {
+
+
   ELECTRON_ENABLED && rmSync('dist-electron', { recursive: true, force: true })
 
   const isServe = command === 'serve'
@@ -23,7 +25,8 @@ export default defineConfig(({ command }) => {
     },
     resolve: {
       alias: {
-        '@': path.join(__dirname, 'src')
+       //'@abzeus': isServe ? path.join(__dirname, 'src/abzeus') : path.join(__dirname, 'node_modules/abzeus'),
+        '@': path.join(__dirname, 'src'),
       },
     },
     /*optimizeDeps: {

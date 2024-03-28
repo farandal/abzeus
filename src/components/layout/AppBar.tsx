@@ -218,6 +218,7 @@ export default function PrimarySearchAppBar() {
             <ButtonGroup>
                 <Button variant={"contained"} value="english" onClick={() => setLanguage("en")} disabled={ABZeusState.options?.lang === "en"}>English</Button>
                 <Button variant={"contained"} value="spanish" onClick={() => setLanguage("es")} disabled={ABZeusState.options?.lang === "es"}>Spanish</Button>
+                <Button variant={"contained"} value="greek" onClick={() => setLanguage("gk")} disabled={ABZeusState.options?.lang === "gk"}>Greek</Button>
             </ButtonGroup>
         </Box>
     }

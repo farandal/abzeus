@@ -19,7 +19,13 @@
       "paths": {
         "@/*": [
           "src/*"
-        ]
+        ],
+        /*"@abzeus": [
+            "node_modules/abzeus"
+          ],
+          "@abzeus/*": [
+            "node_modules/abzeus/*"
+          ]*/
       },
     },
     "include": ["src", "electron"],

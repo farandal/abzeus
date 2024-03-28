@@ -10,7 +10,7 @@ export interface ABZeusConfigState {
 
 const initialState: ABZeusConfigState = {
   input: "",
-  options: {},
+  options: {lang:"en"},
   output: []
 }
 
@@ -25,7 +25,11 @@ export const ABZeusConfigSlice = createSlice({
         state.input = "";
     },
     setOptions: (state, action: PayloadAction<Partial<IABZeusTranslatorConfig>>) => {
-        state.options = {...state.options, ...action.payload}
+        if(state.options) {
+            state.options = {...state.options, ...action.payload}
+        } else {
+            state.options = {...action.payload}
+        }
     },
     setOutput: (state, action: PayloadAction<IABZeusTranslatorOutput[]>) => {
         state.output = action.payload
@@ -34,6 +38,7 @@ export const ABZeusConfigSlice = createSlice({
 })
 
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const { setInput, setOptions,setOutput, resetInput } = ABZeusConfigSlice.actions
 
 export default ABZeusConfigSlice.reducer
