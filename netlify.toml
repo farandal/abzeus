@@ -1,7 +1,13 @@
 [[redirects]]
+  from = "/api/:splat"
+  to = "/api/:splat"
+  status = 200
+  force = true
+[[redirects]]
   from = "/*"
-  to = "/"
+  to = "/index.html"
   status = 200
 [build]
-  node_bundler = "esbuild"
   functions = "functions"
+[functions]
+  node_bundler = "esbuild"
