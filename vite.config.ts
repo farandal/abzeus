@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 import electron from 'vite-plugin-electron/simple'
 import pkg from './package.json'
 
+
 import basicSsl from '@vitejs/plugin-basic-ssl';
 const ELECTRON_ENABLED = false;
 // https://vitejs.dev/config/
@@ -29,6 +30,18 @@ export default defineConfig(({ command }) => {
         '@': path.join(__dirname, 'src'),
       },
     },
+
+    build: {
+        rollupOptions: {
+          external: ['abzeus/src'],
+          output: {
+            globals: {
+              'abzeus/src': 'abzeus'
+            }
+          }
+        }
+      },
+
     /*optimizeDeps: {
         include: ['@mui/material/Tooltip', '@emotion/styled'],
     },*/
@@ -64,12 +77,7 @@ export default defineConfig(({ command }) => {
               minify: isBuild,
               outDir: 'dist-electron/main',
               rollupOptions: {
-                external: [...Object.keys('dependencies' in pkg ? pkg.dependencies : {}),"abzeus/src"],
-                output: {
-                    globals: {
-                      'abzeus/src': 'abzeus'
-                    }
-                  }
+                external: [...Object.keys('dependencies' in pkg ? pkg.dependencies : {})],
               },
             },
           },
