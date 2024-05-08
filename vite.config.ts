@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import electron from 'vite-plugin-electron/simple'
 import pkg from './package.json'
-
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 import basicSsl from '@vitejs/plugin-basic-ssl';
 const ELECTRON_ENABLED = false;
@@ -31,15 +31,7 @@ export default defineConfig(({ command }) => {
       },
     },
 
-    /*build: {
-        rollupOptions: {
-          external: ['abzeus']
-        }
-    },*/
-
-    /*optimizeDeps: {
-        include: ['@mui/material/Tooltip', '@emotion/styled'],
-    },*/
+   
     optimizeDeps: {
         include: [
           '@emotion/react', 
@@ -48,6 +40,16 @@ export default defineConfig(({ command }) => {
         ],
       },
     plugins: [
+        
+    viteStaticCopy({
+      targets: [
+        {
+          src: path.resolve(__dirname, './functions') + '/[!.]*',
+          dest: './functions',
+        },
+      ],
+    }),
+
       react({
         jsxImportSource: '@emotion/react',
         babel: {
