@@ -9,7 +9,8 @@ export interface IWordGraph {
     width: number,
     height: number,
     rootId?: Key,
-    style?: any
+    style?: any,
+    zoom?: number
 }
 
 export interface IWordGraphImperativeCalls {
@@ -20,7 +21,7 @@ export interface IWordGraphImperativeCalls {
 
 const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls, IWordGraph> = (props, ref) => {
 
-    const { abZeusWordGraph, width, height, rootId, style } = props;
+    const { abZeusWordGraph, width, height,zoom = 3, rootId, style } = props;
     const defaultContainerStyles = { width, height }
     const containerProps = { style: { ...style, ...defaultContainerStyles } || { ...defaultContainerStyles } }
 
@@ -56,7 +57,7 @@ const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls,
             try {
                 modifiedNodes[link.source].childLinks.push(link)
             } catch (e) {
-                console.error(e);
+                //console.error(e);
             }
         });
 
@@ -140,7 +141,7 @@ const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls,
 
     useEffect(() => {
         if (fgRef && fgRef.current) {
-            fgRef.current.zoom(3);
+            fgRef.current.zoom(zoom);
             // fgRef.current.centerAt({ x: width/2, y: 300});
             //fgRef.current.centerAt(-5, -10);
 
@@ -189,7 +190,7 @@ const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls,
 
                 const canvasURL = canvas.toDataURL();
 
-                //fgRef.current.zoom(1);
+                fgRef.current.zoom(zoom);
 
                 return canvasURL;
             }
@@ -204,14 +205,14 @@ const ABZeusWordGraph: React.ForwardRefRenderFunction<IWordGraphImperativeCalls,
         .id(d => d.id)
         .parentId(d => d.parent)(_graph.current.nodes) : null
 
-    return _graph.current && _graph.current.nodes && hierarchy ? <div className='ABZeusGraph'>
+    return _graph.current && _graph.current.nodes && hierarchy ? <div className='ABZeusGraph' >
 
         <div className='background'  {...containerProps}></div>
         <div className='graph'> <ForceGraph2D
 
             ref={fgRef}
-            width={width}
-            height={height}
+            width={defaultContainerStyles.width}
+            height={defaultContainerStyles.height}
             d3Hierarchy={hierarchy}
             graphData={{
                 nodes: _graph.current.nodes.map((item: any) => Object.assign({}, item)),

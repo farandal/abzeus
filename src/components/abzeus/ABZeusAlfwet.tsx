@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import {ABZeusDict, IABZeusDictEntry} from "abzeus";
+
 import { ABZeusConfigState } from "@/state/ABZeusConfigSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Box } from "@mui/material";
 
+import { IABZeusDictEntry, ABZeusDict } from "abzeus/src"
 
 const ABZeusAlfwet = () => {
 

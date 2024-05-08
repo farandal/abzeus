@@ -8,7 +8,7 @@ import { Box } from '@mui/material';
 
 import ABZeusSuggestedTags from '@/components/abzeus/ABZeusSuggestedTags';
 import { IABZeusTranslatorOutput } from 'abzeus';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 export interface ISuggested {
     [x: string]: string[];
@@ -17,11 +17,8 @@ export interface ISuggested {
 const Home = () => {
 
     const appConfig = useAppConfig();
-    const version = appConfig.version
     const sizeHook = appConfig.isElectron ? useElectronWindow : useWindowWidth
     const size = sizeHook()
-
-    const dispatch = useDispatch();
 
     const suggested: ISuggested = {
         "en": ["philosophy", "zeus", "logos", "god", "theology", "olimpus", "constructivism"],
@@ -30,6 +27,12 @@ const Home = () => {
     }
     const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
 
+    const [currentTag, setCurrentTag] = useState<string>();
+
+    const onSelectTag = (w: string) => {
+        setCurrentTag(w);
+    }
+
     if (!size) return <div>loading...</div>
 
     const widgetConfig: IABZeusTranslatorWidget = {
@@ -37,36 +40,26 @@ const Home = () => {
         height: 650,
         options: {
             lang: ABZeusState.options?.lang || "es",
-        }
+        },
+        dispatchOutputGlobalState: true
     }
 
     return <Box className="mainContent home">
 
-        <ABZeusTranslatorWidget {...widgetConfig} />
-        <ABZeusSuggestedTags  tags={suggested} />
+        <ABZeusTranslatorWidget {...widgetConfig} w={currentTag} />
+        <ABZeusSuggestedTags tags={suggested} onTag={onSelectTag} />
         {ABZeusState.output && ABZeusState.output.length > 0 && <Box className="secondaryContent">
-       
-        <div className="translationResults">
-            {ABZeusState.output && ABZeusState.output.map((value: IABZeusTranslatorOutput) => {
-                return <Box sx={{ textAlign: "center", justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
-                    <h2 className={ABZeusState.options?.lang}>{value.charTranslatedWord}</h2>
-                    <h2 className={ABZeusState.options?.lang}>({value.splittedWord.join("'")}).*</h2>
-                    <p>{value.detailedOutput}</p>
-                    <p>{value.simpleOutput}</p>
-            
-                </Box>
-            })}
-        </div>
-
-        </Box>}
-
-        {/*<div className='mainHeader' style={{left:(size[0]/2-160)}}>
-            <div className='highlightedText abzeus'>
-                *◯•
+            <div className="translationResults">
+                {ABZeusState.output && ABZeusState.output.map((value: IABZeusTranslatorOutput) => {
+                    return <Box sx={{ textAlign: "center", justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
+                        <h2 className={ABZeusState.options?.lang}>{value.charTranslatedWord}</h2>
+                        <h2 className={ABZeusState.options?.lang}>({value.splittedWord.join("'")}).*</h2>
+                        <p>{value.detailedOutput}</p>
+                        <p>{value.simpleOutput}</p>
+                    </Box>
+                })}
             </div>
-
-            <h1 className='mainText abzeus'>ABZeus</h1>
-        </div>*/}
+        </Box>}
     </Box>
 
 }

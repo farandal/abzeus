@@ -1,4 +1,4 @@
-import { IABZeusTranslatorOutput } from "abzeus";
+import { IABZeusTranslatorOutput } from "abzeus/src";
 
 const ABZeusETO = ({input}:{input:IABZeusTranslatorOutput["trinitarianGroups"]}) => {
     

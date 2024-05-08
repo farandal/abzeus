@@ -22,6 +22,29 @@
     font-family: 'ABZeus', sans-serif;
 }
 
+.abzeus.diagram {
+    font-size: 10em;
+}
+
+.abzeus.mainTitle {
+    font-size: 8em;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+
+.list-item-text {
+
+}
+
+.list-item-subtext {
+    position: absolute;
+    top: 30px;
+    left: 73px;
+    font-size: small;
+}
+
 @font-face {
     font-family: 'Greek';
     src: local('ABZeus'), url('/fonts/GentiumBookPlus-Regular.ttf') format('truetype');
@@ -163,3 +186,32 @@
     margin: 0;
     padding:0;
   }
+
+.letter-button {
+    text-align: center;
+    background: lightgrey;
+    margin: 3px;
+    border-radius: 4px;
+}
+/* Transition */
+
+.page-enter {
+    opacity: 0;
+}
+  
+.page-enter-active {
+    opacity: 1;
+    transition: opacity 1500ms;
+}
+  
+.page-exit {
+    opacity: 1;
+}
+  
+.page-exit-active {
+    opacity: 0;
+    transition: opacity 1500ms;
+}
+
+p { padding: 0px 16px; line-height: 2; font-size: 1.1em}
+h1,h2,h3,h4,h5 { padding: 0px 8px; margin: 0px;}
