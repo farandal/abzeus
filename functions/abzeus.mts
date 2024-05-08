@@ -1,9 +1,11 @@
 import { Config, Context } from "@netlify/functions";
 import { ABZeusAlfwetTranslator } from "abzeus";
 
-const translator = new ABZeusAlfwetTranslator();
+
 
 export default async (req: Request, context: Context) => {
+
+  const translator = new ABZeusAlfwetTranslator();
 
   const { w } = context.params;
  
@@ -15,6 +17,7 @@ export default async (req: Request, context: Context) => {
   const _f1 = queryString.get("f1") || "+<>";
   const _f2 = queryString.get("f2") || "+><";
 
+  console.log("Test");
   if (!_w) {
     return new Response(JSON.stringify({ error: "[w] parameter for word is required" }), { status: 400 });
   }
@@ -32,7 +35,10 @@ export default async (req: Request, context: Context) => {
 
   } catch (error:any) {
 
-    return new Response(JSON.stringify({ error: error && error.message ? error.message : error }), { status: 500 });
+    console.log(error)
+
+    //return new Response(JSON.stringify({ error: error && error.message ? error.message : error }), { status: 500 });
+    return new Response(JSON.stringify({error:"error"}), { status: 500 });
 
   }
 }
