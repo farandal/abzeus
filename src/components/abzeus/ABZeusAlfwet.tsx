@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Box } from "@mui/material";
 
-import { IABZeusDictEntry, ABZeusDict } from "abzeus/src"
+import { IABZeusDictEntry, ABZeusDict } from "abzeus"
 
 const ABZeusAlfwet = () => {
 

@@ -33,14 +33,9 @@ export default defineConfig(({ command }) => {
 
     build: {
         rollupOptions: {
-          external: ['abzeus/src'],
-          output: {
-            globals: {
-              'abzeus/src': 'abzeus'
-            }
-          }
+          external: ['abzeus']
         }
-      },
+    },
 
     /*optimizeDeps: {
         include: ['@mui/material/Tooltip', '@emotion/styled'],

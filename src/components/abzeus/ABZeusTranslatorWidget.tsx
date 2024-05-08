@@ -1,5 +1,5 @@
 import { Box, Chip, TextField } from "@mui/material"
-import { ABZeusAlfwetTranslator, IABZeusTranslatorOutput, IABZeusTranslatorConfig } from "abzeus/src";
+import { ABZeusAlfwetTranslator, IABZeusTranslatorOutput, IABZeusTranslatorConfig } from "abzeus";
 import { useState, useEffect, useRef } from "react"
 import { ButtonGroup, Button } from "@mui/material";
 import html2canvas from "html2canvas";
