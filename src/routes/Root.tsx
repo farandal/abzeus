@@ -5,7 +5,6 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { RootState, store } from "@/store";
 
-
 import {
     Outlet,
     BrowserRouter
@@ -13,7 +12,8 @@ import {
 import { ABZeusConfigState, setInput, setOptions } from "@/state/ABZeusConfigSlice";
 
 import { useEffect } from "react";
-import MainWrapper from "@/pages/MainWrapper";
+import MainWrapper from "@/components/MainWrapper";
+import SelectionBar from "@/components/layout/SelectionBar";
 
 
 const Root = () => {
@@ -24,6 +24,15 @@ const Root = () => {
                 main: '#FFF',
             },
         },
+        components: {
+            MuiButtonBase: {
+              styleOverrides: {
+                root: {
+                    textTransform: "none",
+                },
+              },
+            },
+          }
     });
 
     return <ThemeProvider theme={theme}>
@@ -32,6 +41,7 @@ const Root = () => {
                 <AppBar />
                 <Outlet />
                 <Footer />
+                <SelectionBar/>
             </MainWrapper>
         </Provider>
     </ThemeProvider>

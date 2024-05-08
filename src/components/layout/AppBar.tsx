@@ -27,8 +27,9 @@ import {
     Link,
     useNavigate
   } from "react-router-dom";
+import routes from '@/Routes';
+import LettersMenu from '../LettersMenu';
 
-  
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -108,37 +109,38 @@ export default function PrimarySearchAppBar() {
         navigate(loc);
     }
 
-    const DrawerList = (
-        <Box sx={{ width: 250 }} role="presentation" onClick={() => toggleDrawer(false)}>
-            <List>
-                <ListItem key={"dictionary"} disablePadding>
+    const RoutesMenu = () => {
+        return  <List>
+                    <ListItem key={"dictionary"} disablePadding>
+                        <Box sx={{p:2}}>
+                            -O-Z*us
+                        </Box>
+                    </ListItem>
+                    <Divider />
+                    {routes.map((r,idx) => {
+                        return <ListItem key={r.path} disablePadding>
+                        <ListItemButton onClick={() => changeLocation(r.path)}>
+                            {r.icon && <ListItemIcon>
+                                {r.icon}
+                                </ListItemIcon>} 
+                            <ListItemText className='list-item-text' primary={<><span className='abzeus'>{r.name}</span> <span className='list-item-subtext'> {r.name} </span></>} />
+                        </ListItemButton>
+                        </ListItem>
+                    })}
+                </List>
+    }
 
-                    <Box sx={{p:2}}>
-                        -O-Z*us
-                    </Box>
-
-                </ListItem>
-                <Divider />
-                <ListItem key={"/"} disablePadding>
-                    <ListItemButton onClick={() => changeLocation("/")}>
-                        {/*<ListItemIcon>
-                               <InboxIcon />
-                            </ListItemIcon>*/} 
-                        <ListItemText primary={<>Home (<span className='abzeus'> home </span>)</>} />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem key={"/alfwet"} disablePadding>
-                    <ListItemButton  onClick={() => changeLocation("/alfwet")} >
-                        {/*<ListItemIcon>
-                               <InboxIcon />
-                            </ListItemIcon>*/} 
-                        <ListItemText primary={<>Alfwet (<span className='abzeus'> alfwet </span>)</>} />
-                    </ListItemButton>
-
-                </ListItem>
-            </List>
-            <Divider />
-
+    const DrawerContent = (
+        <Box sx={{ width: 260 }} role="presentation" onClick={() => toggleDrawer(false)}>
+            <Box display="flex">
+                <Box width={{ xs: '100%', md: '100%' }} bgcolor="primary.light" p={0}>
+                    <RoutesMenu />
+                </Box>
+                {/*<Box width={{ xs: '100%', md: '20%' }} bgcolor="primary.light" p={1}>
+                    <LettersMenu />
+                </Box>*/}
+            </Box>
+             {/*<RoutesMenu /> */}
         </Box>
     );
 
@@ -293,7 +295,7 @@ export default function PrimarySearchAppBar() {
             {/*renderMenu*/}
 
             <Drawer open={open} onClose={() => toggleDrawer(false)}>
-                {DrawerList}
+                {DrawerContent}
             </Drawer>
         </Box>
 

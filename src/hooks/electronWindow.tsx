@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 
 const useElectronWindow = () => {
-    const [windowSize, setWindowSize] = useState<[number,number] | null>(null);
+    const [windowSize, setWindowSize] = useState<[number,number]>();
 
     useEffect(() => {
       const handleWindowSize = (size:any) => {
-        console.log(size);
         setWindowSize([size[0],size[1]]);
       };
   
@@ -17,7 +16,7 @@ const useElectronWindow = () => {
       };
     }, []);
     
-  return windowSize ? [windowSize[0], windowSize[1]] : null;
+  return windowSize ? [windowSize[0] || 0, windowSize[1] || 0] : [0,0];
 };
 
 export default useElectronWindow;

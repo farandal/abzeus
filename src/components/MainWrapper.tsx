@@ -1,6 +1,6 @@
 import { ABZeusConfigState, setInput, setOptions } from '@/state/ABZeusConfigSlice';
 import { RootState } from '@/store';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 export interface ISuggested {
     [x: string]: string[];
@@ -12,7 +12,7 @@ const MainWrapper = (props:PropsWithChildren):React.ReactNode => {
 
     const dispatch = useDispatch();
 
-    const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
+    // const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
 
     useEffect(() => {
         const queryString = new URLSearchParams(window.location.search);
