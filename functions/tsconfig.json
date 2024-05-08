@@ -1,0 +1,7 @@
+{
+    "extends": "../tsconfig",
+    "compilerOptions": {
+      "strictNullChecks": false
+    },
+    "files": ["abzeus.mts"]
+  }

@@ -3,4 +3,5 @@
   to = "/"
   status = 200
 [build]
+  node_bundler = "esbuild"
   functions = "functions"
