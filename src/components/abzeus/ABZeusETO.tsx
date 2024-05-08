@@ -1,4 +1,4 @@
-import { IABZeusTranslatorOutput } from "abzeus/src";
+import { IABZeusTranslatorOutput } from "abzeus";
 
 const ABZeusETO = ({input}:{input:IABZeusTranslatorOutput["trinitarianGroups"]}) => {
     
@@ -22,7 +22,8 @@ const ABZeusETO = ({input}:{input:IABZeusTranslatorOutput["trinitarianGroups"]})
           <tbody>
             <tr>
               {headers.map((header, index) => (
-                /* @ts-ignore */
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                /* @ts-expect-error */
                 <td key={index}>{input[header]}</td>
               ))}
             </tr>
