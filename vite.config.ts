@@ -31,11 +31,11 @@ export default defineConfig(({ command }) => {
       },
     },
 
-    build: {
+    /*build: {
         rollupOptions: {
           external: ['abzeus']
         }
-    },
+    },*/
 
     /*optimizeDeps: {
         include: ['@mui/material/Tooltip', '@emotion/styled'],
