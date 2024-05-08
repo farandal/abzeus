@@ -33,6 +33,25 @@ const Home = () => {
         setCurrentTag(w);
     }
 
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        
+        const queryString = new URLSearchParams(window.location.search);
+        
+        const word = queryString.get('w');
+        const l = queryString.get('l');
+
+        if (word) {
+            setCurrentTag(word)
+        }
+
+        if (l) {
+            dispatch(setOptions({lang:l}))
+        } 
+
+      }, []);
+
     if (!size) return <div>loading...</div>
 
     const widgetConfig: IABZeusTranslatorWidget = {

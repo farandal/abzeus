@@ -10,7 +10,7 @@ const MainWrapper = (props:PropsWithChildren):React.ReactNode => {
     
     const {children} = props;
 
-    const dispatch = useDispatch();
+    /*const dispatch = useDispatch();
 
     // const ABZeusState: ABZeusConfigState = useSelector((state: RootState) => state.ABZeusConfig)
 
@@ -30,7 +30,7 @@ const MainWrapper = (props:PropsWithChildren):React.ReactNode => {
         } else {
             dispatch(setOptions({lang:"en"}))
         }
-      }, []);
+      }, []);*/
 
     return children
 }
