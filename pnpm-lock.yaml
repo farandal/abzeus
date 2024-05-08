@@ -33,8 +33,8 @@ dependencies:
     specifier: ^2.2.1
     version: 2.2.1(react-redux@9.1.0)(react@18.2.0)
   abzeus:
-    specifier: 0.0.19
-    version: 0.0.19
+    specifier: 0.1.0
+    version: 0.1.0
   axios:
     specifier: ^1.6.8
     version: 1.6.8
@@ -4888,8 +4888,8 @@ packages:
     resolution: {integrity: sha512-JMJ5soJWP18htbbxJjG7bG6yuI6pRhgJ0scHHTfkUjf6wjP912xZWvM+A4sJK3gqd9E8fcPbDnOefbA9Th/FIQ==}
     dev: false
 
-  /abzeus@0.0.19:
-    resolution: {integrity: sha512-ELoZ1Rqw5bVeXcNYnn8iX4NruohuZkrIpu2QZPl9nGqLStZWibrrOvcg+1dALCDjA/V1sJPFLfPPZ3QK6VHS0A==}
+  /abzeus@0.1.0:
+    resolution: {integrity: sha512-OfNUc5wOf6xAgbSm8+dE1c68Q7f/yUpbmRkKZVnrHTp9FRTaDrFupfsG15HmH7R4ZMz+F7KuDgiDKMwDeyo+eg==}
     dev: false
 
   /accepts@1.3.8:
