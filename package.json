@@ -100,7 +100,8 @@
     "typescript": "^5.4.2",
     "vite": "^5.1.6",
     "vite-plugin-electron": "^0.28.3",
-    "vite-plugin-electron-renderer": "^0.14.5"
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vite-plugin-static-copy": "^1.0.4"
   },
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0",
