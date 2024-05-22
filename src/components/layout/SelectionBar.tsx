@@ -7,7 +7,7 @@ import { ABZeusConfigState } from '../../state/ABZeusConfigSlice'
 import { createPortal } from 'react-dom'
 import { useTextSelection } from 'use-text-selection'
 import { css } from '@emotion/css'
-import { ABZeusAlfwetTranslator, IABZeusTranslatorOutput, IABZeusTranslatorConfig } from "abzeus";
+import {ABZeusAlfwetTranslator} from "abzeus";
 
 type Props = {
     target?: HTMLElement

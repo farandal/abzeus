@@ -8,17 +8,17 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 import basicSsl from '@vitejs/plugin-basic-ssl';
 const ELECTRON_ENABLED = false;
+
 // https://vitejs.dev/config/
 /* @ts-expect-error command */
 export default defineConfig(({ command }) => {
-
 
   ELECTRON_ENABLED && rmSync('dist-electron', { recursive: true, force: true })
 
   const isServe = command === 'serve'
   const isBuild = command === 'build'
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG
-  
+ 
   return {
     define: {
         "process": process,
@@ -26,9 +26,12 @@ export default defineConfig(({ command }) => {
     },
     resolve: {
       alias: {
-       //'@abzeus': isServe ? path.join(__dirname, 'src/abzeus') : path.join(__dirname, 'node_modules/abzeus'),
-        '@': path.join(__dirname, 'src'),
+        //isServe && 'abzeus': isServe ? path.join(__dirname, 'src/abzeus') : path.join(__dirname, 'node_modules/abzeus'),
+        ... isServe && { 'abzeus' :  path.join(__dirname, '../abzeus/src') },
+       '@': path.join(__dirname, 'src'),
       },
+      //preserveSymlinks: true,
+      
     },
 
    
