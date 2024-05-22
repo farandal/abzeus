@@ -1,8 +1,6 @@
 import { Config, Context } from "@netlify/functions";
 import { ABZeusAlfwetTranslator } from "abzeus";
 
-
-
 export default async (req: Request, context: Context) => {
 
   const translator = new ABZeusAlfwetTranslator();
@@ -30,7 +28,8 @@ export default async (req: Request, context: Context) => {
                 lang: _l,
                 parentTriniFormat: _f1,
                 childTriniFormat: _f2,
-                nestedTranslation: false
+                nestedTranslation: false,
+                processTree: false
             })[0];
         })
 
